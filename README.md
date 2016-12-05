@@ -1,29 +1,15 @@
-# README #
-
-This README would normally document whatever steps are necessary to get your application up and running.
+# Ludo Game #
 
 ### What is this repository for? ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+* Desktop Ludo game built with React and Electron.
 
 ### How do I get set up? ###
+* Install node and npm
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+* Install electron globally if you do not have it already using
+	_npm install -g electron
 
-### Contribution guidelines ###
+* run _npm  install_ in the application root to install dependencies
 
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+* run _npm start_ to start the app
