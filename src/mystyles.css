@@ -1,0 +1,33 @@
+.house {
+	display: inline-block;
+	background-color: #ddd;
+}
+
+.house .house-left {
+	float: left;
+	margin-bottom: 0px;
+}
+
+.rails .rails-h-left {
+	clear: both;
+	float: left;
+}
+
+.rails .rails-h-right {
+	/*float: right;*/
+}
+
+.rails {
+	display: inline-block;
+}
+
+.home {
+	display: inline-block;
+	background-image: url('../resources/images/home.jpg');
+	background-size: 100% 100%;
+}
+
+.game-frame {
+	margin: 10px 10px;
+	/*float: right;*/
+}

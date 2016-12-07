@@ -1,3 +1,4 @@
+const electron = require('electron');
 const {app, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
@@ -6,14 +7,15 @@ let win,
 	iconPath = nativeImage.createFromPath(path.join(__dirname, 'resources/images/icon.png'));
 
 function createWindow() {
+	const displays = electron.screen.getPrimaryDisplay();
 
 	win  = new BrowserWindow({
-		width: 800,
-		height: 600,
-		icon: iconPath
+		width: parseInt(displays.workAreaSize.width*0.7),
+		height: parseInt(displays.workAreaSize.height*0.9),
+		icon: iconPath,
+		title: "Ludo Game",
+		resizable: false
 	});
-
-	console.log(iconPath);
 
 	win.loadURL(url.format({
 		pathname: path.join(__dirname, 'app/index.html'),
@@ -21,7 +23,8 @@ function createWindow() {
 		slashes: true
 	}));
 
-	win.webContents.openDevTools();
+	// Not necessary keyboard Ctrl+Shift+I opens the inspector
+	// win.webContents.openDevTools();
 
 	win.on('closed', () => {
 		win = null;
