@@ -4,24 +4,62 @@ import HouseFrame from './house-frame.js';
 import { HRailFrame, VRailFrame } from './rail-frame.js';
 
 export default class GameFrame extends React.Component {
+	constructor(){
+		super();
+		this.state = {
+			houseOneCards: {
+				cardOne: 'still',
+				cardTwo: 'still',
+				cardThree: 'still',
+				cardFour: 'still'
+			},
+			houseTwoCards: {
+				cardOne: 'still',
+				cardTwo: 'still',
+				cardThree: 'still',
+				cardFour: 'still'
+			},
+			houseThreeCards: {
+				cardOne: 'still',
+				cardTwo: 'still',
+				cardThree: 'still',
+				cardFour: 'still'
+			},
+			houseFourCards: {
+				cardOne: 'still',
+				cardTwo: 'still',
+				cardThree: 'still',
+				cardFour: 'still'
+			}
+		}
+	}
 	render() {
-		const houseHeight = window.innerHeight * 0.4;
-		const VRailHeight = window.innerHeight * 0.4;
-		const HRailHeight = window.innerHeight * 0.2;
+		const gameBoardHeight = this.props.gameBoardHeight;
+		const houseHeight = gameBoardHeight * 0.4;
+		const VRailHeight = gameBoardHeight * 0.4;
+		const HRailHeight = gameBoardHeight * 0.2;
+		const houseOneColour = "green";
+		const houseTwoColour = "red";
+		const houseThreeColour = "yellow";
+		const houseFourColour = "blue";
 		return (
 			<div className="">
-				<HouseFrame houseHeight={houseHeight}/>
-				<VRailFrame VRailHeight={VRailHeight}/>
-				<HouseFrame houseHeight={houseHeight}/>
-				<div>
+				<div style={{display: 'flex', justifyContent: 'center'}}>
+					<HouseFrame houseHeight={houseHeight} houseColour={houseOneColour} houseCards={this.state.houseOneCards} />
+					<VRailFrame VRailHeight={VRailHeight}/>
+					<HouseFrame houseHeight={houseHeight} houseColour={houseTwoColour} houseCards={this.state.houseTwoCards} />
+				</div>
+				<div style={{display: 'flex', justifyContent: 'center'}}>
 					<HRailFrame HRailHeight={HRailHeight} position={"left"}/>
 					<div className="home" style={{width: HRailHeight, height: HRailHeight}}>
 					</div>
 					<HRailFrame HRailHeight={HRailHeight} position={"right"}/>
 				</div>
-				<HouseFrame houseHeight={houseHeight} position={"left"}/>
-				<VRailFrame VRailHeight={VRailHeight}/>
-				<HouseFrame houseHeight={houseHeight} position={"right"}/>
+				<div style={{display: 'flex', justifyContent: 'center'}}>
+					<HouseFrame houseHeight={houseHeight} houseColour={houseThreeColour} position={"left"} houseCards={this.state.houseThreeCards} />
+					<VRailFrame VRailHeight={VRailHeight}/>
+					<HouseFrame houseHeight={houseHeight} houseColour={houseFourColour} position={"right"} houseCards={this.state.houseFourCards} />
+				</div>
 			</div>
 		);
 	}

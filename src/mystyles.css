@@ -31,3 +31,39 @@
 	margin: 10px 10px;
 	/*float: right;*/
 }
+
+.house-colour-green {
+	background-color: #218F08;
+	border-radius: 50px;
+}
+
+.house-colour-green-light {
+	background-color: #95F77F;
+}
+
+.house-colour-red {
+	background-color: #ED0707;
+	border-radius: 50px;
+}
+
+.house-colour-red-light {
+	background-color: #F7A37F;
+}
+
+.house-colour-yellow {
+	background-color: #EFEF0B;
+	border-radius: 50px;
+}
+
+.house-colour-yellow-light {
+	background-color: #F0F77F;
+}
+
+.house-colour-blue {
+	background-color: #11089C;
+	border-radius: 50px;
+}
+
+.house-colour-blue-light {
+	background-color: #7FA2F7;
+}
