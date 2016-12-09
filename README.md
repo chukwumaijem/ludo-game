@@ -8,10 +8,11 @@
 * Install node and npm
 
 * Install electron globally if you do not have it already using
-	_npm install_ -g electron
+	*_npm install_* -g electron
 
-* run _npm  install_ in the application root to install dependencies
+* run *_npm  install_* in the application root to install dependencies
 
-* run _npm start_ to start the app
+* run *_npm run compile* to build the app
 
-* run _npm run work to build the app
+* run *_npm start_* to start the app
+

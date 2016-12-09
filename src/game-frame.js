@@ -45,18 +45,18 @@ export default class GameFrame extends React.Component {
 			<div className="">
 				<div style={{display: 'flex', justifyContent: 'center'}}>
 					<HouseFrame houseHeight={houseHeight} houseColour={houseOneColour} houseCards={this.state.houseOneCards} />
-					<VRailFrame VRailHeight={VRailHeight} boxColour={houseTwoColour} boxPosition={'top'} />
+					<VRailFrame VRailHeight={VRailHeight} boxColour={houseTwoColour} boxPosition={'VT'} />
 					<HouseFrame houseHeight={houseHeight} houseColour={houseTwoColour} houseCards={this.state.houseTwoCards} />
 				</div>
 				<div style={{display: 'flex', justifyContent: 'center'}}>
-					<HRailFrame HRailHeight={HRailHeight} position={"left"} boxColour={houseOneColour} boxPosition={'left'} />
+					<HRailFrame HRailHeight={HRailHeight} position={"left"} boxColour={houseOneColour} boxPosition={'HL'} />
 					<div className="home" style={{width: HRailHeight, height: HRailHeight}}>
 					</div>
-					<HRailFrame HRailHeight={HRailHeight} position={"right"} boxColour={houseFourColour} boxPosition={'right'} />
+					<HRailFrame HRailHeight={HRailHeight} position={"right"} boxColour={houseFourColour} boxPosition={'HR'} />
 				</div>
 				<div style={{display: 'flex', justifyContent: 'center'}}>
 					<HouseFrame houseHeight={houseHeight} houseColour={houseThreeColour} position={"left"} houseCards={this.state.houseThreeCards} />
-					<VRailFrame VRailHeight={VRailHeight} boxColour={houseFourColour} boxPosition={'bottom'} />
+					<VRailFrame VRailHeight={VRailHeight} boxColour={houseThreeColour} boxPosition={'VB'} />
 					<HouseFrame houseHeight={houseHeight} houseColour={houseFourColour} position={"right"} houseCards={this.state.houseFourCards} />
 				</div>
 			</div>
