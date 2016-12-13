@@ -4,7 +4,7 @@ import './mystyles.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import GameFrame from './components/game-frame.js';
+import GameFrame from './components/gameplay-components/game-frame.js';
 
 class Game extends React.Component {
   render() {
