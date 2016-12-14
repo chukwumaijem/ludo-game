@@ -8,12 +8,14 @@ export default class HouseFrame extends React.Component {
 	renderCards() {
 		const cards = [];
 		const availableCards = this.props.houseCards;
-		const cardSize = this.props.houseHeight * 0.15;
+		const seedSize = this.props.houseHeight * 0.15;
 		Object.keys(availableCards).map((card, ind) => {
-			cards.push(
-				<div className={`house-colour-${this.props.houseColour}`} key={ind}
-				style={{width: cardSize, height: cardSize, margin: `${cardSize*0.5}px` }}></div>
-			);
+			if (card.substr(3, 6) !== 'Colour' && availableCards[card] === 'still') {
+				cards.push(
+					<div className={`house-colour-${this.props.houseColour}`} key={ind}
+					style={{width: seedSize, height: seedSize, margin: `${seedSize*0.5}px` }}></div>
+				);
+			}
 		});
 		return cards;
 	}
