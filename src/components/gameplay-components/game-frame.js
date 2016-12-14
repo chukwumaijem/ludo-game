@@ -1,6 +1,7 @@
 import React from 'react';
 import HouseFrame from './house-frame.js';
 import { HRailFrame, VRailFrame } from './rail-frame.js';
+import GameSideBoard from './game-sideboard.js';
 
 export default class GameFrame extends React.Component {
 
@@ -36,6 +37,8 @@ export default class GameFrame extends React.Component {
 				'H4-Colour': null
 			}
 		};
+		this.findSeedGroup = this.findSeedGroup.bind(this);
+		this.setSeedPosition = this.setSeedPosition.bind(this);
 	}
 
 	componentWillMount() {
@@ -71,6 +74,37 @@ export default class GameFrame extends React.Component {
 		return seeds;
 	}
 
+	findSeedGroup(seedId) {
+		let house;
+		console.log(seedId);
+		switch (seedId.substr(0, 2)){
+			case 'H1':
+				house = this.state.houseOneCards;
+				break;
+			case 'H2':
+				house = this.state.houseTwoCards;
+				break;
+			case 'H3':
+				house = this.state.houseThreeCards;
+				break;
+			case 'H4':
+				house = this.state.houseFourCards;
+				break;
+			default:
+				return;
+		}
+
+		return house;
+	}
+
+	setSeedPosition(seedId, seedPosition) {
+		const seedGroup = this.findSeedGroup(seedId);
+		console.log(seedGroup);
+		seedGroup[seedId] = seedPosition;
+
+		this.setState({seedGroup: seedGroup})
+	}
+
 	render() {
 		const gameBoardHeight = this.props.gameBoardHeight;
 		const houseHeight = gameBoardHeight * 0.4;
@@ -81,25 +115,31 @@ export default class GameFrame extends React.Component {
 		const houseThreeColour = this.state.houseThreeCards["H3-Colour"];
 		const houseFourColour = this.state.houseFourCards["H4-Colour"];
 		const seedData = this.getLudoSeeds();
+		const sideBoardWidth = window.innerWidth - gameBoardHeight;
 		return (
-			<div className="">
-				<div style={{display: 'flex', justifyContent: 'center'}}>
-					<HouseFrame houseHeight={houseHeight} houseColour={houseOneColour} houseCards={this.state.houseOneCards} />
-					<VRailFrame VRailHeight={VRailHeight} boxColour={houseTwoColour} boxPosition={'VT'} seedData={seedData} />
-					<HouseFrame houseHeight={houseHeight} houseColour={houseTwoColour} houseCards={this.state.houseTwoCards} />
-				</div>
-				<div style={{display: 'flex', justifyContent: 'center'}}>
-					<HRailFrame HRailHeight={HRailHeight} position={"left"} boxColour={houseOneColour} boxPosition={'HL'} seedData={seedData} />
-					<div className="home" style={{width: HRailHeight, height: HRailHeight}}>
+			<div>
+				<div className="" style={{float: 'left'}}>
+					<div style={{display: 'flex', justifyContent: 'center'}}>
+						<HouseFrame houseHeight={houseHeight} houseColour={houseOneColour} houseCards={this.state.houseOneCards} />
+						<VRailFrame VRailHeight={VRailHeight} boxColour={houseTwoColour} boxPosition={'VT'} seedData={seedData} />
+						<HouseFrame houseHeight={houseHeight} houseColour={houseTwoColour} houseCards={this.state.houseTwoCards} />
 					</div>
-					<HRailFrame HRailHeight={HRailHeight} position={"right"} boxColour={houseFourColour} boxPosition={'HR'} seedData={seedData} />
+					<div style={{display: 'flex', justifyContent: 'center'}}>
+						<HRailFrame HRailHeight={HRailHeight} position={"left"} boxColour={houseOneColour} boxPosition={'HL'} seedData={seedData} />
+						<div className="home" style={{width: HRailHeight, height: HRailHeight}}>
+						</div>
+						<HRailFrame HRailHeight={HRailHeight} position={"right"} boxColour={houseFourColour} boxPosition={'HR'} seedData={seedData} />
+					</div>
+					<div style={{display: 'flex', justifyContent: 'center'}}>
+						<HouseFrame houseHeight={houseHeight} houseColour={houseThreeColour} position={"left"} houseCards={this.state.houseThreeCards} />
+						<VRailFrame VRailHeight={VRailHeight} boxColour={houseThreeColour} boxPosition={'VB'} seedData={seedData} />
+						<HouseFrame houseHeight={houseHeight} houseColour={houseFourColour} position={"right"} houseCards={this.state.houseFourCards} />
+					</div>
 				</div>
-				<div style={{display: 'flex', justifyContent: 'center'}}>
-					<HouseFrame houseHeight={houseHeight} houseColour={houseThreeColour} position={"left"} houseCards={this.state.houseThreeCards} />
-					<VRailFrame VRailHeight={VRailHeight} boxColour={houseThreeColour} boxPosition={'VB'} seedData={seedData} />
-					<HouseFrame houseHeight={houseHeight} houseColour={houseFourColour} position={"right"} houseCards={this.state.houseFourCards} />
-				</div>
-			</div>
+				<div style={{float: 'right', width: sideBoardWidth*0.6, marginLeft: sideBoardWidth*0.1}}>
+	      	<GameSideBoard changeSeedPosition={this.setSeedPosition} />
+	      </div>
+      </div>
 		);
 	}
 };
