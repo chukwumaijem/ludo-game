@@ -8,17 +8,17 @@ import GameFrame from './components/gameplay-components/game-frame.js';
 
 class Game extends React.Component {
   render() {
-  	const winSize = window.innerHeight * 0.95;
+    const winSize = window.innerHeight * 0.95;
     return (
-    	<div style={{height: winSize, display: 'flex', justifyContent: 'center'}}>
-    		{/*<div className="jumbotron text-center">
-    			<h1>Welcome to my ludo game app</h1>
-    			<p>It's going to be marvelous</p>
-    			<img src='../resources/images/icon.png' />
-    		</div>*/}
-    		<div className="game-frame">
-    			<GameFrame  gameBoardHeight={winSize}/>
-    		</div>
+      <div style={{ height: winSize, display: 'flex', justifyContent: 'center' }}>
+        {/*<div className="jumbotron text-center">
+          <h1>Welcome to my ludo game app</h1>
+          <p>It's going to be marvelous</p>
+          <img src='../resources/images/icon.png' />
+          </div>*/}
+        <div className="game-frame">
+          <GameFrame gameBoardHeight={winSize} />
+        </div>
       </div>
     );
   }

@@ -1,91 +1,86 @@
 .house {
-	display: inline-block;
-	background-color: #ddd;
+  display: inline-block;
+  background-color: #ddd;
 }
 
 .house .house-left {
-	float: left;
-	margin-bottom: 0px;
+  float: left;
+  margin-bottom: 0px;
 }
 
 .rails .rails-h-left {
-	clear: both;
-	float: left;
-}
-
-.rails .rails-h-right {
-	/*float: right;*/
+  clear: both;
+  float: left;
 }
 
 .rails {
-	display: inline-block;
+  display: inline-block;
 }
 
 .home {
-	display: inline-block;
-	background-image: url('../resources/images/home.jpg');
-	background-size: 100% 100%;
+  display: inline-block;
+  background-image: url('../resources/images/home.jpg');
+  background-size: 100% 100%;
 }
 
 .game-frame {
-	margin: 10px 10px;
-	/*float: right;*/
+  margin: 10px 10px;
 }
 
 .house-colour-green {
-	background-color: #218F08;
-	border-radius: 50px;
+  background-color: #218F08;
+  border-radius: 50px;
 }
 
 .house-colour-green-light {
-	background-color: #95F77F;
+  background-color: #95F77F;
 }
 
 .house-colour-red {
-	background-color: #ED0707;
-	border-radius: 50px;
+  background-color: #ED0707;
+  border-radius: 50px;
 }
 
 .house-colour-red-light {
-	background-color: #F7A37F;
+  background-color: #F7A37F;
 }
 
 .house-colour-yellow {
-	background-color: #EFEF0B;
-	border-radius: 50px;
+  background-color: #EFEF0B;
+  border-radius: 50px;
 }
 
 .house-colour-yellow-light {
-	background-color: #F0F77F;
+  background-color: #F0F77F;
 }
 
 .house-colour-blue {
-	background-color: #11089C;
-	border-radius: 50px;
+  background-color: #11089C;
+  border-radius: 50px;
 }
 
 .house-colour-blue-light {
-	background-color: #7FA2F7;
+  background-color: #7FA2F7;
 }
 
 .railbox {
-	border: 0.5px solid #aaa;
-	display: inline-block;
-	margin-bottom: -5px;
+  border: 0.5px solid #aaa;
+  display: inline-block;
+  margin-bottom: -5px;
 }
 
 .box-green {
-	background-color: #95F77F;
+  background-color: #95F77F;
 }
 
 .box-red {
-	background-color: #F7A37F;
+  background-color: #F7A37F;
 }
 
 .box-yellow {
-	background-color: #F0F77F;
+  background-color: #F0F77F;
 }
 
 .box-blue {
-	background-color: #7FA2F7;
+  background-color: #7FA2F7;
 }
