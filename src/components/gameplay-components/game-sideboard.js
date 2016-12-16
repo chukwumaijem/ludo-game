@@ -8,8 +8,8 @@ export default class GameSideBoard extends React.Component {
 
   setSeed() {
     const seedId = document.getElementById('seedId').value;
-    const seedPosition = document.getElementById('seedPosition').value;
-    this.props.changeSeedPosition(seedId, seedPosition);
+    const moves = document.getElementById('seedPosition').value;
+    this.props.seedMove(seedId, moves.split(''));
   }
 
   render() {
@@ -22,3 +22,4 @@ export default class GameSideBoard extends React.Component {
     );
   }
 };
+
