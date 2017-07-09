@@ -4,7 +4,6 @@
   "description": "A desktop ludo game",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron main.js",
     "compile": "./node_modules/.bin/webpack -p",
     "watch": "./node_modules/.bin/webpack -d --watch",
