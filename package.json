@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node_modules/.bin/electron main.js",
     "work": "npm run watch & npm start",
-    "web": "npm run watch & pushstate-server app",
-    "watch": "react-scripts start",
+    "web": "npm run watch & pushstate-server build",
+    "watch": "nodemon --watch ./src --watch main.js --exec react-scripts build",
     "build:client:production": "react-scripts build",
     "preview": "npm run build:client:production && npm start",
     "dev": "react-scripts start"
@@ -26,9 +26,8 @@
   ],
   "author": "Chuwkuma Ezumezu",
   "license": "ISC",
-  "homepage": "https://github.com/chukwumaijem/ludo-game#readme",
+  "homepage": ".",
   "dependencies": {
-    "action-creators": "^0.1.0",
     "bootstrap": "^3.3.7",
     "custom-react-scripts": "0.2.2",
     "electron": "^2.0.0",
@@ -36,6 +35,11 @@
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-redux": "^5.0.7",
-    "redux": "^4.0.0"
+    "redux": "^4.0.0",
+    "redux-actions": "^2.3.0",
+    "redux-thunk": "^2.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.3"
   }
 }
