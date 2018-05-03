@@ -19,7 +19,7 @@
 
 .home {
   display: inline-block;
-  background-image: url('../resources/images/home.jpg');
+  background-image: url('./assets/images/home.jpg');
   background-size: 100% 100%;
 }
 
