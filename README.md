@@ -19,3 +19,7 @@ Desktop Ludo game built with React and Electron.
 - Run *_nvm use_* to set node version to 8.9.4
 - Run *_yarn install_* in the application root to install dependencies
 - Run *_npm run build_* to build the app for your platform
+
+
+### Screenshot
+![alt text](https://user-images.githubusercontent.com/17248267/39621409-9c9f72a0-4f86-11e8-878d-af6fbe30bc2f.png)
