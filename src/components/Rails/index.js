@@ -1,7 +1,7 @@
-import React from 'react';
-import { buildRails } from '../../helpers/gameaction-helpers/seed-rail-build.js';
+import React, { Component } from 'react';
+import { buildRails } from '../../utils/buildRails';
 
-export class VRailFrame extends React.Component {
+export class VRailFrame extends Component {
   render() {
     const VRailHeight = this.props.VRailHeight;
     const boxPosition = this.props.boxPosition;
@@ -15,7 +15,7 @@ export class VRailFrame extends React.Component {
   }
 };
 
-export class HRailFrame extends React.Component {
+export class HRailFrame extends Component {
   render() {
     const HRailHeight = this.props.HRailHeight;
     const boxPosition = this.props.boxPosition;

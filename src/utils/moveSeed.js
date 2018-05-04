@@ -1,7 +1,7 @@
 import { moveSeed } from '../actions/gameData';
 import store from '../store';
 
-import { startPoint, newSeedPosition } from '../helpers/gameaction-helpers/seed-path.js';
+import { startPoint, newSeedPosition } from './seedPath.js';
 
 /**
  * setColours
