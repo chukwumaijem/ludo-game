@@ -19,7 +19,7 @@
 
 .home {
   display: inline-block;
-  background-image: url('../resources/images/home.jpg');
+  background-image: url('./assets/images/home.jpg');
   background-size: 100% 100%;
 }
 
@@ -46,7 +46,7 @@
 }
 
 .house-colour-yellow {
-  background-color: #EFEF0B;
+  background-color: rgb(202, 202, 57);
   border-radius: 50px;
 }
 
@@ -83,4 +83,28 @@
 
 .box-blue {
   background-color: #7FA2F7;
+}
+
+.seed-0 {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.seed-1 {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.seed-2 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.seed-3 {
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
