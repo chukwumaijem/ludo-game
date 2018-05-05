@@ -125,12 +125,10 @@ function invalidPlay(state, seedId, moves) {
   const movesLeft = seedRemainingMoves(state, seedId);
   const movesSum = moves.reduce((a, b) => Number(a) + Number(b), 0);
 
-  if (position === 'still' && !moves.includes("6")) {
-    return true;
-  }
-  if (position !== 'still' && movesSum > movesLeft) {
-    return true;
-  }
+  if (position === 'still' && !moves.includes("6")) return true;
+  if (position === 'still' && movesSum - 6 > movesLeft) return true;
+  if (position !== 'still' && movesSum > movesLeft) return true;
+
   return false;
 }
 
