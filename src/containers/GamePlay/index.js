@@ -8,8 +8,10 @@ import Houses from '../../components/Houses';
 
 class GameFrame extends React.Component {
 
-  componentWillMount() {
-    this.props.setHouseColours();
+  componentWillMount(colours) {
+    if(colours){
+      this.props.setHouseColours(colours);
+    }
   }
   
   render() {
