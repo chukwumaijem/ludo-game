@@ -6,8 +6,8 @@ export default class HouseFrame extends React.Component {
     const cards = [];
     const availableCards = this.props.houseCards;
     const seedSize = this.props.houseHeight * 0.15;
-    Object.keys(availableCards).map((card, index) => {
-      if (card.substr(3, 6) !== 'Colour' && availableCards[card] === 'still') {
+    Object.keys(availableCards).forEach((card, index) => {
+      if (card.substr(3, 6) !== 'Colour' && availableCards[card].position === 'still') {
         cards.push(
           <div
             className={

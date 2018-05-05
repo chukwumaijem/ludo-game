@@ -55,7 +55,7 @@ function buildSeed(seedPosition, seedData, size) {
   const seedSize = size * 0.25;
 
   Object.keys(seedData).forEach((item) => {
-    if (seedData[item] === seedPosition) {
+    if (seedData[item].position === seedPosition) {
       const houseColour = seedData[`${item.substr(0, 2)}-Colour`];
       seed = <div className={`house-colour-${houseColour}`}
         style={{ width: seedSize, height: seedSize, margin: `${(size / 48)}px auto auto auto` }}></div>

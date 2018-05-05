@@ -2,12 +2,12 @@ import { createAction } from 'redux-actions';
 import Types from './actionTypes';
 import { setSeedPosition } from '../utils/moveSeed';
 
-function setColour(data) {
+function setColours(data) {
   return createAction(Types.SET_COLOURS)(data);
 }
 
 export function setHouseColours(colours) {
-  return setColour(colours);
+  return setColours(colours);
 }
 
 export function moveSeed(data) {
