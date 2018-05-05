@@ -106,7 +106,11 @@ function hlOnePath(seedId, currentSeedPosition) {
   if (seedId.substr(0, 2) !== 'H1') {
     newPosition = 'HL-00';
   } else {
-    newPosition = `${currentSeedPosition.substr(0, 4)}${increment + 1}`;
+    if (increment === 5) {
+      newPosition = 'home';
+    } else {
+      newPosition = `${currentSeedPosition.substr(0, 4)}${increment + 1}`;
+    }
   }
 
   return newPosition;
@@ -137,7 +141,7 @@ function hlTwoPath(seedId, currentSeedPosition) {
  */
 function vtPath(seedId, currentSeedPosition) {
   let newPosition,
-    match=`${currentSeedPosition.substr(0, 3)}${currentSeedPosition.substr(4, 1)}`;
+    match = `${currentSeedPosition.substr(0, 3)}${currentSeedPosition.substr(4, 1)}`;
   switch (match) {
     case 'VT-0':
       newPosition = vtZeroPath(seedId, currentSeedPosition);
@@ -185,7 +189,11 @@ function vtOnePath(seedId, currentSeedPosition) {
   if (seedId.substr(0, 2) !== 'H2') {
     newPosition = 'VT-02';
   } else {
-    newPosition = `${currentSeedPosition.substr(0, 3)}${increment + 1}1`;
+    if (increment === 5) {
+      newPosition = 'home';
+    } else {
+      newPosition = `${currentSeedPosition.substr(0, 3)}${increment + 1}1`;
+    }
   }
 
   return newPosition;
@@ -262,7 +270,11 @@ function hrOnePath(seedId, currentSeedPosition) {
   if (seedId.substr(0, 2) !== 'H4') {
     newPosition = 'HR-25';
   } else {
-    newPosition = `${currentSeedPosition.substr(0, 4)}${increment - 1}`;
+    if (increment === 0) {
+      newPosition = 'home';
+    } else {
+      newPosition = `${currentSeedPosition.substr(0, 4)}${increment - 1}`;
+    }
   }
 
   return newPosition;
@@ -341,7 +353,11 @@ function vbOnePath(seedId, currentSeedPosition) {
   if (seedId.substr(0, 2) !== 'H3') {
     newPosition = 'VB-50';
   } else {
-    newPosition = `${currentSeedPosition.substr(0, 3)}${increment - 1}1`;
+    if (increment === 0) {
+      newPosition = 'home';
+    } else {
+      newPosition = `${currentSeedPosition.substr(0, 3)}${increment - 1}1`;
+    }
   }
 
   return newPosition;
