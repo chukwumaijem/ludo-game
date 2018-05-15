@@ -14,13 +14,15 @@ function createWindow() {
     height: parseInt(displays.workAreaSize.height * 0.9),
     icon: iconPath,
     title: "Ludo Game",
-    resizable: false
+    resizable: false,
+    webPreferences: {
+      nodeIntegration: false,
+    }
   });
 
   win.loadURL(url.format({
     pathname: path.join(__dirname, 'build/index.html'),
     protocol: 'file:',
-    slashes: true
   }));
 
   // Not necessary keyboard Ctrl+Shift+I opens the inspector
