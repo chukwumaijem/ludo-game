@@ -4,6 +4,8 @@ import { bindActionCreators } from 'redux';
 
 import { moveSeedToPosition } from '../../actions';
 
+import styles from './SideBoard.module.css';
+
 class SideBoard extends Component {
   setSeed = () => {
     const seedId = document.getElementById('seedId').value;
@@ -11,18 +13,34 @@ class SideBoard extends Component {
     this.props.moveSeedToPosition(seedId, moves.split(''));
   }
   render() {
-    const sideBoardWidth = this.props.width;
+    const sideBoardWidth = this.props.sideBoardWidth;
+    const containerStyle = {
+      float: 'right',
+      width: sideBoardWidth * 0.8,
+      marginLeft: sideBoardWidth * 0.1,
+      position: 'relative',
+      height: '100%',
+    };
     return (
-      <div style={{ float: 'right', width: sideBoardWidth * 0.6, marginLeft: sideBoardWidth * 0.1 }}>
-        <div className="text-center" style={{ display: 'inline-block', justifyContent: 'center' }}>
-          <input id="seedId" type="text" placeholder="Enter Seed id" /><br />
-          <input id="seedPosition" type="text" placeholder="Enter new position" /><br />
-          <button onClick={this.setSeed}>Set Seed</button>
+      <div style={containerStyle}>
+        <div className={styles.chatWindowContainer}>
+          Chat Window
+        </div>
+        <div className={styles.dieWindowContainer}>
+          <div>Roll</div>
+          <div>
+            Roll Results
+          </div>
         </div>
       </div>
-
     )
   }
+}
+
+function mapStateToProps({ gameSettings }) {
+  return {
+    sideBoardWidth: gameSettings.sideBoardWidth,
+  };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -31,4 +49,4 @@ function mapDispatchToProps(dispatch) {
   }, dispatch);
 }
 
-export default connect(null, mapDispatchToProps)(SideBoard);
+export default connect(mapStateToProps, mapDispatchToProps)(SideBoard);

@@ -17,6 +17,5 @@ export function moveSeed(data) {
 export function moveSeedToPosition(seed, position) {
   return dispatch => {
     setSeedPosition({ dispatch, seed, position });
-    // moveSeed({ seed, position })
   }
 }

@@ -8,7 +8,7 @@ import { getLudoSeeds } from '../../utils/moveSeed';
 class Houses extends Component {
 
   render() {
-    const gameBoardHeight = this.props.height;
+    const gameBoardHeight = this.props.gameBoardHeight;
     const houseHeight = gameBoardHeight * 0.4;
     const VRailHeight = gameBoardHeight * 0.4;
     const HRailHeight = gameBoardHeight * 0.2;
@@ -40,13 +40,14 @@ class Houses extends Component {
   }
 }
 
-function mapStateToProps({ gameData }) {
+function mapStateToProps({ gameData, gameSettings }) {
   return {
     houseOneCards: gameData.houseOneCards,
     houseTwoCards: gameData.houseTwoCards,
     houseThreeCards: gameData.houseThreeCards,
     houseFourCards: gameData.houseFourCards,
     gameData,
+    gameBoardHeight: gameSettings.gameBoardHeight
   }
 }
 export default connect(mapStateToProps)(Houses);
