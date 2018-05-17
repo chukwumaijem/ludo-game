@@ -4,6 +4,8 @@ export {
   disableInactiveHouseSeed,
   dieCastComplete,
   setSelectedSeed,
+  clearNotification,
+  sendNotification,
 } from './gameData';
 
 export {

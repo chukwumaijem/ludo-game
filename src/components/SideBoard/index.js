@@ -64,6 +64,21 @@ class SideBoard extends Component {
     this.setState({ results });
   }
 
+  moveSeed = () => {
+    const results = this.state.results;
+    const selectedSeed = this.props.selectedSeed;
+    const indexes = [];
+    const selectedMoves = results.filter((result, index) => {
+      indexes.push(index);
+      return result.selected;
+    });
+
+    this.props.moveSeedToPosition(selectedSeed, selectedMoves, () => {
+      const resultsLeft = results.filter(result => !result.selected);
+      this.setState({ results: resultsLeft });
+    });
+  }
+
   renderDieResults = () => {
     const results = this.state.results;
     return results.map(result =>
