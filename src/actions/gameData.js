@@ -19,3 +19,11 @@ export function moveSeedToPosition(seed, position) {
     setSeedPosition({ dispatch, seed, position });
   }
 }
+
+function disableInactiveSeed(data) {
+  return createAction(Types.DISABLE_INACTIVE_HOUSE_SEEDS)(data);
+}
+
+export function disableInactiveHouseSeed(activeHouse) {
+  return disableInactiveSeed(activeHouse)
+}

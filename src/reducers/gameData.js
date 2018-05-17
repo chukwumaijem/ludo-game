@@ -32,7 +32,7 @@ const initialState = {
     'H4-C4': { position: still, movesLeft: movesLeft },
     'H4-Colour': 'green'
   },
-  playerTurn: 'P1',
+  playerTurn: `P${parseInt((Math.random() * 4), 10) + 1}`,
 };
 
 
@@ -43,6 +43,22 @@ export default function gameData(state = initialState, action) {
       return setColours(state, action);
     case Types.MOVE_SEED_TO_POSITION:
       return Object.assign({}, state, action.seedGroup);
+    case Types.DISABLE_INACTIVE_HOUSE_SEEDS:
+      const items = { ...state };
+      Object.keys(items).forEach(item => {
+        if (item !== 'playerTurn') {
+          Object.keys(items[item]).forEach(data => {
+            if (!data.toLowerCase().includes('colour')) {
+              if (data.substr(1, 1) !== action.payload.substr(1, 1)) {
+                items[item][data].disabled = true;
+              } else {
+                items[item][data].disabled = false;
+              }
+            }
+          });
+        }
+      });
+    return items;
     default:
       return state;
   }

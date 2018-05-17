@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
+import { disableInactiveHouseSeed } from '../../actions';
 import HouseFrame from '../House';
 import { HRailFrame, VRailFrame } from '../Rails';
 import { getLudoSeeds } from '../../utils/moveSeed';
 
 class Houses extends Component {
+  componentDidMount() {
+    const playerTurn = this.props.gameData.playerTurn;
+    this.props.disableInactiveHouseSeed(playerTurn);
+  }
 
   render() {
     const gameBoardHeight = this.props.gameBoardHeight;
@@ -50,4 +56,9 @@ function mapStateToProps({ gameData, gameSettings }) {
     gameBoardHeight: gameSettings.gameBoardHeight
   }
 }
-export default connect(mapStateToProps)(Houses);
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({
+    disableInactiveHouseSeed,
+  }, dispatch);
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Houses);

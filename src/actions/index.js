@@ -1,6 +1,7 @@
 export {
   setHouseColours,
   moveSeedToPosition,
+  disableInactiveHouseSeed,
 } from './gameData';
 
 export {

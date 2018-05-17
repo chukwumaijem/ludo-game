@@ -11,7 +11,7 @@ export default class HouseFrame extends React.Component {
         cards.push(
           <div
             className={
-              `house-colour-${this.props.houseColour} seed-${index}`
+              `house-colour-${this.props.houseColour} seed-${index} ${availableCards[card].disabled && 'disabled'}`
             }
             key={index}
             style={{

@@ -30,8 +30,11 @@
 .house-colour-green {
   background-color: #218F08;
   border-radius: 50px;
+  cursor: pointer;
 }
-
+.house-colour-green.disabled {
+  cursor: not-allowed;
+}
 .house-colour-green-light {
   background-color: #95F77F;
 }
@@ -39,8 +42,11 @@
 .house-colour-red {
   background-color: #ED0707;
   border-radius: 50px;
+  cursor: pointer;
 }
-
+.house-colour-red.disabled {
+  cursor: not-allowed;
+}
 .house-colour-red-light {
   background-color: #F7A37F;
 }
@@ -48,8 +54,11 @@
 .house-colour-yellow {
   background-color: rgb(202, 202, 57);
   border-radius: 50px;
+  cursor: pointer;
 }
-
+.house-colour-yellow.disabled {
+  cursor: not-allowed;
+}
 .house-colour-yellow-light {
   background-color: #F0F77F;
 }
@@ -57,8 +66,11 @@
 .house-colour-blue {
   background-color: #11089C;
   border-radius: 50px;
+  cursor: pointer;
 }
-
+.house-colour-blue.disabled {
+  cursor: not-allowed;
+}
 .house-colour-blue-light {
   background-color: #7FA2F7;
 }
