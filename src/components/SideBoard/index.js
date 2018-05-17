@@ -99,7 +99,7 @@ class SideBoard extends Component {
       alignItems: 'center'
     };
     const disableButton = (playerTurn !== loggedInPlayer || dieCast) ? 'disabled' : null;
-    const playDisabled = selectedSeed && results.length;
+    const playDisabled = selectedSeed && results.filter(result => result.selected).length;
     return (
       <div style={containerStyle}>
         <hr className={styles.hRule} />
@@ -108,7 +108,7 @@ class SideBoard extends Component {
         <div className={styles.playMoveContainer}>
           <p>Playing: Player {NUMBER[playerTurn.substr(1, 1)]}</p>
           <div className={styles.playMove}>
-            <button disabled={!playDisabled}>Play it</button>
+            <button disabled={!playDisabled} onClick={this.moveSeed}>Play it</button>
             {selectedSeed &&
               <span>
                 Selected Seed: Seed {NUMBER[selectedSeed.substr(4, 1)]}
