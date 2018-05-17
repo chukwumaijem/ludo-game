@@ -1,6 +1,14 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { setSelectedSeed } from '../../actions';
 
-export default class HouseFrame extends React.Component {
+class HouseFrame extends React.Component {
+  selectSeed = (seedId) => {
+    if (!seedId.substr(1, 1) === this.props.playerTurn.substr(1, 1)) return;
+    // if ()
+    this.props.setSelectedSeed(seedId)
+  }
 
   renderCards = () => {
     const cards = [];
@@ -18,8 +26,10 @@ export default class HouseFrame extends React.Component {
               width: seedSize,
               height: seedSize,
               margin: `${seedSize * 0.5}px`
-            }}>
-            </div>
+            }}
+            onClick={() => this.selectSeed(card)}
+          >
+          </div>
         );
       }
     });
@@ -45,3 +55,16 @@ export default class HouseFrame extends React.Component {
     );
   }
 };
+
+function mapStateToProps({ gameData }) {
+  return {
+    playerTurn: gameData.playerTurn,
+  };
+}
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({
+    setSelectedSeed,
+  }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HouseFrame);

@@ -1,5 +1,5 @@
 .dieWindowContainer {
-  height: 40vh;
+  height: 35vh;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -20,6 +20,10 @@
   box-shadow: 0 0 5px gray;
   font-weight: bold;
   cursor: pointer;
+}
+.disabled {
+  background-color: gray;
+  cursor: not-allowed;   
 }
 .rollDieButton:hover {
   background: #3A6629;
@@ -52,4 +56,15 @@
 .selectedResult {
   display: inline-block;
   box-shadow: 0 0 0 0 white;
+}
+.playMoveContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+.playMove {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }

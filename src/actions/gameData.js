@@ -25,5 +25,21 @@ function disableInactiveSeed(data) {
 }
 
 export function disableInactiveHouseSeed(activeHouse) {
-  return disableInactiveSeed(activeHouse)
+  return disableInactiveSeed(activeHouse);
+}
+
+function setDieCastComplete() {
+  return createAction(Types.DIE_CAST_COMPLETE)();
+}
+export function dieCastComplete() {
+
+  return setDieCastComplete();
+}
+
+function selectedSeed(data) {
+  return createAction(Types.SET_SELECTED_SEED)(data);
+}
+
+export function setSelectedSeed(id) {
+  return selectedSeed(id)
 }

@@ -32,7 +32,11 @@ const initialState = {
     'H4-C4': { position: still, movesLeft: movesLeft },
     'H4-Colour': 'green'
   },
-  playerTurn: `P${parseInt((Math.random() * 4), 10) + 1}`,
+  playerTurn: 'P2', //`P${parseInt((Math.random() * 4), 10) + 1}`,
+  loggedInPlayer: 'P2', //this is used to decide which house belongs to the current player
+  selectedSeed: '',
+  dieCast: false, // true is a user has finished rolling die for his turn
+  playComplete: false, // true when current player has finished movig his seeds
 };
 
 
@@ -46,7 +50,7 @@ export default function gameData(state = initialState, action) {
     case Types.DISABLE_INACTIVE_HOUSE_SEEDS:
       const items = { ...state };
       Object.keys(items).forEach(item => {
-        if (item !== 'playerTurn') {
+        if (item.endsWith('Cards')) {
           Object.keys(items[item]).forEach(data => {
             if (!data.toLowerCase().includes('colour')) {
               if (data.substr(1, 1) !== action.payload.substr(1, 1)) {
@@ -58,7 +62,17 @@ export default function gameData(state = initialState, action) {
           });
         }
       });
-    return items;
+      return items;
+    case Types.DIE_CAST_COMPLETE:
+      return Object.assign({},
+        state,
+        { dieCast: true }
+      );
+    case Types.SET_SELECTED_SEED:
+      return Object.assign({},
+        state,
+        { selectedSeed: action.payload }
+      )
     default:
       return state;
   }

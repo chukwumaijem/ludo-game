@@ -2,6 +2,8 @@ export {
   setHouseColours,
   moveSeedToPosition,
   disableInactiveHouseSeed,
+  dieCastComplete,
+  setSelectedSeed,
 } from './gameData';
 
 export {
