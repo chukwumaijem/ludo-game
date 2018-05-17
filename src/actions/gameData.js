@@ -59,3 +59,11 @@ function createNotification(data) {
 export function sendNotification(data) {
   return createNotification(data);
 }
+
+function changeTurnAction() {
+  return createAction(Types.CHANGE_TURN)();
+};
+
+export function changeTurn() {
+  return changeTurnAction();
+}

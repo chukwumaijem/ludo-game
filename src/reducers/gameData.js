@@ -72,7 +72,18 @@ export default function gameData(state = initialState, action) {
       return Object.assign({},
         state,
         { selectedSeed: action.payload }
-      )
+      );
+    case Types.CHANGE_TURN:
+      const turn = Number(state.playerTurn.substr(1, 1));
+      return Object.assign({},
+        state,
+        {
+          playerTurn: turn === 4 ? 'P1' : `P${turn + 1}`,
+          selectedSeed: '',
+          dieCast: false,
+          playComplete: false,
+        }
+      );
     default:
       return state;
   }

@@ -6,6 +6,7 @@ export {
   setSelectedSeed,
   clearNotification,
   sendNotification,
+  changeTurn,
 } from './gameData';
 
 export {
