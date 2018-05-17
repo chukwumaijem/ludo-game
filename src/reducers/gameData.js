@@ -12,7 +12,7 @@ const initialState = {
     'H1-Colour': 'blue'
   },
   houseTwoCards: {
-    'H2-C1': { position: still, movesLeft: movesLeft },
+    'H2-C1': { position: still, movesLeft: 34 },
     'H2-C2': { position: still, movesLeft: movesLeft },
     'H2-C3': { position: still, movesLeft: movesLeft },
     'H2-C4': { position: still, movesLeft: movesLeft },
@@ -36,7 +36,7 @@ const initialState = {
   loggedInPlayer: 'P2', //this is used to decide which house belongs to the current player
   selectedSeed: '',
   dieCast: false, // true is a user has finished rolling die for his turn
-  playComplete: false, // true when current player has finished movig his seeds
+  notification: {}
 };
 
 
@@ -69,21 +69,35 @@ export default function gameData(state = initialState, action) {
         { dieCast: true }
       );
     case Types.SET_SELECTED_SEED:
+      const seedId = action.payload;
+      if (seedId.substr(1, 1) !== state.playerTurn.substr(1, 1))
+        return state;
       return Object.assign({},
         state,
-        { selectedSeed: action.payload }
+        { selectedSeed: seedId }
       );
     case Types.CHANGE_TURN:
       const turn = Number(state.playerTurn.substr(1, 1));
+      const nextTurn = turn === 2 ? 'P4' : turn === 3 ? 'P1' : turn === 4 ? 'P3' : `P${turn + 1}`
       return Object.assign({},
         state,
         {
-          playerTurn: turn === 4 ? 'P1' : `P${turn + 1}`,
+          playerTurn: nextTurn, //order: 1, 2, 4, 3 and repeat
           selectedSeed: '',
           dieCast: false,
-          playComplete: false,
+          loggedInPlayer: nextTurn, // for dev only. key needs to be removed for prod.
         }
       );
+    case Types.REMOVE_NOTIFICATION:
+      return Object.assign({},
+        state,
+        { notification: [] }
+      )
+    case Types.CREATE_NOTIFICATION:
+      return Object.assign({},
+        state,
+        { notification: action.payload }, // use id here so notifications can be cleared one after the other.
+      )
     default:
       return state;
   }

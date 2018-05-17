@@ -45,7 +45,7 @@ export function setSelectedSeed(id) {
 }
 
 function removeNotification(data) {
-  return createAction(Types.CREATE_NOTIFICATION)(data);
+  return createAction(Types.REMOVE_NOTIFICATION)(data);
 }
 
 export function clearNotification(data) {
@@ -53,7 +53,7 @@ export function clearNotification(data) {
 }
 
 function createNotification(data) {
-  return createAction(Types.REMOVE_NOTIFICATION)(data);
+  return createAction(Types.CREATE_NOTIFICATION)(data);
 }
 
 export function sendNotification(data) {

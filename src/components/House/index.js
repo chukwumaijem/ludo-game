@@ -5,8 +5,7 @@ import { setSelectedSeed } from '../../actions';
 
 class HouseFrame extends React.Component {
   selectSeed = (seedId) => {
-    if (!seedId.substr(1, 1) === this.props.playerTurn.substr(1, 1)) return;
-    // if ()
+    // if (seedId.substr(1, 1) !== this.props.playerTurn.substr(1, 1)) return;
     this.props.setSelectedSeed(seedId)
   }
 

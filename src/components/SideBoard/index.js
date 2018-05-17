@@ -3,8 +3,16 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import rollADie from 'roll-a-die';
 import shortId from 'shortid';
+import Toastr from 'toastr';
+import sortBy from 'lodash.sortby';
 
-import { moveSeedToPosition, dieCastComplete } from '../../actions';
+import {
+  moveSeedToPosition,
+  dieCastComplete,
+  changeTurn,
+  clearNotification
+} from '../../actions';
+import { findSeedGroup } from '../../utils/moveSeed';
 import GameChat from '../GameChat';
 
 import styles from './SideBoard.module.css';
@@ -28,18 +36,48 @@ class SideBoard extends Component {
     });
   }
 
+  canPlayPlay = () => {
+    const { playerTurn } = this.props;
+    const { results } = this.state;
+    const groups = findSeedGroup(this.props.gameData, `H${playerTurn.substr(1, 1)}`);
+    const seedGroup = sortBy(groups, (o) => o.movesLeft).reverse();
+    // srting and reversing here to first test and remove seeds that are still
+    let canPlay = 0;
+    const resultCollection = results.map(result => result.value);
+    const resultsSum = resultCollection.reduce((a, b) => a + b, 0);
+    const seedOutside = seedGroup.filter(group => group.movesLeft < 56).length;
+
+    Object.keys(seedGroup).forEach(group => {
+      if (seedGroup[group].position === 'still' && !resultCollection.includes(6)) {
+        canPlay += 1;
+      } else if (seedOutside < 2 && resultsSum > seedGroup[group].movesLeft) {
+        canPlay += 1;
+      }
+    });
+    if (canPlay === 4) {
+      Toastr.info('No valid moves. Changing turn.', 'No Moves')
+      setTimeout(() => {
+        this.endTurn();
+      }, 2000);
+    }
+  }
+
   setDieRollResult = (results) => {
+    const preResults = this.state.results;
     const resultObjects = results.map(result => {
       return { id: shortId.generate(), value: result, selected: false };
     });
-    this.setState(prevState => {
-      return {
-        results: [...prevState.results, ...resultObjects]
+
+    this.setState({
+      results: [
+        ...preResults, ...resultObjects
+      ]
+    }, () => {
+      if (results[0] !== 6 || results[1] !== 6) {
+        this.props.dieCastComplete();
+        this.canPlayPlay()
       }
     });
-    if (results[0] !== 6 || results[1] !== 6) {
-      this.props.dieCastComplete();
-    }
   }
 
   rollDice = () => {
@@ -64,18 +102,28 @@ class SideBoard extends Component {
     this.setState({ results });
   }
 
+  endTurn = () => {
+    this.props.changeTurn();
+    this.setState({ results: [] })
+  }
+
   moveSeed = () => {
     const results = this.state.results;
     const selectedSeed = this.props.selectedSeed;
     const indexes = [];
     const selectedMoves = results.filter((result, index) => {
-      indexes.push(index);
+      if (result.selected) {
+        indexes.push(result.id); //saves the ids for use later
+      }
       return result.selected;
-    });
+    }).map(data => data.value);
 
     this.props.moveSeedToPosition(selectedSeed, selectedMoves, () => {
-      const resultsLeft = results.filter(result => !result.selected);
+      const resultsLeft = results.filter(result => indexes.indexOf(result.id) < 0);
       this.setState({ results: resultsLeft });
+      if (!resultsLeft.length) {
+        this.endTurn()
+      }
     });
   }
 
@@ -99,7 +147,6 @@ class SideBoard extends Component {
       loggedInPlayer,
       selectedSeed,
       dieCast,
-      playComplete
     } = this.props;
     const { results } = this.state;
     const containerStyle = {
@@ -156,7 +203,8 @@ function mapStateToProps({ gameSettings, gameData }) {
     loggedInPlayer: gameData.loggedInPlayer,
     selectedSeed: gameData.selectedSeed,
     dieCast: gameData.dieCast,
-    playComplete: gameData.playComplete,
+    gameData,
+
   };
 }
 
@@ -164,6 +212,8 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     moveSeedToPosition,
     dieCastComplete,
+    changeTurn,
+    clearNotification,
   }, dispatch);
 }
 

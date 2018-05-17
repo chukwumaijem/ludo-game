@@ -23,7 +23,7 @@ export function setColours(state, action) {
  * 
  * gets the house a seed belongs to
  */
-function findSeedGroup(state, seedId) {
+export function findSeedGroup(state, seedId) {
   let house;
   switch (seedId.substr(0, 2)) {
     case 'H1':
@@ -125,11 +125,12 @@ function invalidPlay(state, seedId, moves, dispatch) {
   const movesLeft = seedRemainingMoves(state, seedId);
   const movesSum = moves.reduce((a, b) => Number(a) + Number(b), 0);
 
-  if (position === 'still' && !moves.includes("6")) {
+  if (position === 'still' && !moves.includes(6)) {
+
     dispatch(sendNotification({
       type: 'Error',
       title: 'Throw a Six!',
-      mesage: 'A 6 is need to leave the house!'
+      message: 'A 6 is need to leave the house!'
     }));
     return true;
   };
@@ -137,7 +138,7 @@ function invalidPlay(state, seedId, moves, dispatch) {
     dispatch(sendNotification({
       type: 'Error',
       title: 'Too many Moves',
-      mesage: 'Remove some values to move seed.',
+      message: 'Remove some values to move seed.',
     }));
     return true;
   };
@@ -145,7 +146,7 @@ function invalidPlay(state, seedId, moves, dispatch) {
     dispatch(sendNotification({
       type: 'Error',
       title: 'Too many Moves',
-      mesage: 'Remove some values to move seed.'
+      message: 'Remove some values to move seed.'
     }));
     return true;
   };
@@ -166,8 +167,8 @@ export function setSeedPosition(data) {
   if (invalidPlay(state, seedId, moves, dispatch)) {
     return;
   }
-  if (getSeedPosition(state, seedId) === 'still' && moves.includes("6")) {
-    moves.splice(moves.indexOf("6"), 1);
+  if (getSeedPosition(state, seedId) === 'still' && moves.includes(6)) {
+    moves.splice(moves.indexOf(6), 1);
     setTimeout(() => {
       const lastMove = (moves.length === 1) ? true : false;
       const seedPosition = startPoint(seedId);

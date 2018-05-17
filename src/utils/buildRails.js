@@ -1,4 +1,6 @@
 import React from 'react';
+import { setSelectedSeed } from '../actions';
+import store from '../store';
 
 export function buildRails(col, row, size, position, colour, seedData) {
   const boxSize = size / 3;
@@ -57,8 +59,15 @@ function buildSeed(seedPosition, seedData, size) {
   Object.keys(seedData).forEach((item) => {
     if (seedData[item].position === seedPosition) {
       const houseColour = seedData[`${item.substr(0, 2)}-Colour`];
-      seed = <div className={`house-colour-${houseColour}`}
-        style={{ width: seedSize, height: seedSize, margin: `${(size / 48)}px auto auto auto` }}></div>
+      seed = <div
+        className={`house-colour-${houseColour}`}
+        style={{
+          width: seedSize,
+          height: seedSize,
+          margin: `${(size / 48)}px auto auto auto`
+        }}
+        onClick={() => store.dispatch(setSelectedSeed(item))}
+      ></div>
     }
   });
   return seed;
