@@ -3,31 +3,39 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { setSelectedSeed } from '../../actions';
 
+const NUMBER = {
+  1: 'One',
+  2: 'Two',
+  3: 'Three',
+  4: 'Four'
+}
 class HouseFrame extends React.Component {
   selectSeed = (seedId) => {
-    // if (seedId.substr(1, 1) !== this.props.playerTurn.substr(1, 1)) return;
     this.props.setSelectedSeed(seedId)
   }
 
-  renderCards = () => {
+  renderCards = (label, houseCards, houseColour) => {
     const cards = [];
-    const availableCards = this.props.houseCards;
     const seedSize = this.props.houseHeight * 0.15;
-    Object.keys(availableCards).forEach((card, index) => {
-      if (card.substr(3, 6) !== 'Colour' && availableCards[card].position === 'still') {
+    Object.keys(houseCards).forEach((card, index) => {
+      if (!card.endsWith('Colour') && houseCards[card].position === 'still') {
         cards.push(
           <div
             className={
-              `house-colour-${this.props.houseColour} seed-${index} ${availableCards[card].disabled && 'disabled'}`
+              `house-seeds house-colour-${houseColour} seed-${index} ${houseCards[card].disabled && 'disabled'}`
             }
             key={index}
             style={{
-              width: seedSize,
-              height: seedSize,
-              margin: `${seedSize * 0.5}px`
+              width: `${seedSize}px`,
+              height: `${seedSize}px`,
+              margin: `${seedSize * 0.5}px`,
+              textAlign: 'center',
+              color: 'white',
+              lineHeight: `${seedSize}px`,
             }}
             onClick={() => this.selectSeed(card)}
           >
+            {index + 1}
           </div>
         );
       }
@@ -37,7 +45,11 @@ class HouseFrame extends React.Component {
   render() {
     const houseHeight = this.props.houseHeight;
     const className = `house house-${this.props.position}`;
-    const colorClass = `house-colour-${this.props.houseColour}-light`;
+    const label = this.props.houseNumber;
+    const houseCards = this.props.gameData[`house${NUMBER[label]}Cards`];
+    const houseColour = houseCards[`H${label}-Colour`];
+    const colorClass = `house-colour-${houseColour}-light`;
+
     return (
       <div className={className}>
         <div className={colorClass} style={{ width: houseHeight, height: houseHeight, padding: houseHeight * 0.2 }}>
@@ -47,7 +59,7 @@ class HouseFrame extends React.Component {
             justifyContent: 'center',
             position: 'absolute'
           }}>
-            {this.renderCards()}
+            {this.renderCards(label, houseCards, houseColour)}
           </div>
         </div>
       </div>
@@ -58,6 +70,7 @@ class HouseFrame extends React.Component {
 function mapStateToProps({ gameData }) {
   return {
     playerTurn: gameData.playerTurn,
+    gameData,
   };
 }
 function mapDispatchToProps(dispatch) {

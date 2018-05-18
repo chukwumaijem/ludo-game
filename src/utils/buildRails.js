@@ -55,19 +55,25 @@ export function buildRails(col, row, size, position, colour, seedData) {
 function buildSeed(seedPosition, seedData, size) {
   let seed;
   const seedSize = size * 0.25;
+  const boxSize = size / 3;
 
-  Object.keys(seedData).forEach((item) => {
+  Object.keys(seedData).forEach((item, index) => {
     if (seedData[item].position === seedPosition) {
       const houseColour = seedData[`${item.substr(0, 2)}-Colour`];
       seed = <div
-        className={`house-colour-${houseColour}`}
+        className={`house-seeds house-colour-${houseColour}`}
         style={{
-          width: seedSize,
-          height: seedSize,
-          margin: `${(size / 48)}px auto auto auto`
+          width: `${seedSize}px`,
+          height: `${seedSize}px`,
+          margin: `${(boxSize * 0.12)}px`,
+          textAlign: 'center',
+          color: 'white',
+          lineHeight: `${seedSize}px`,
         }}
         onClick={() => store.dispatch(setSelectedSeed(item))}
-      ></div>
+      >
+        {item.substr(4, 1)}
+      </div>
     }
   });
   return seed;

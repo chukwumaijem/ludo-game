@@ -28,10 +28,13 @@
   margin: 10px 10px;
 }
 
-.house-colour-green {
-  background-color: #218F08;
+.house-seeds {
   border-radius: 50px;
   cursor: pointer;
+  position: absolute;
+}
+.house-colour-green {
+  background-color: #218F08;
 }
 .house-colour-green.disabled {
   cursor: not-allowed;
@@ -42,8 +45,6 @@
 
 .house-colour-red {
   background-color: #ED0707;
-  border-radius: 50px;
-  cursor: pointer;
 }
 .house-colour-red.disabled {
   cursor: not-allowed;
@@ -54,8 +55,6 @@
 
 .house-colour-yellow {
   background-color: rgb(202, 202, 57);
-  border-radius: 50px;
-  cursor: pointer;
 }
 .house-colour-yellow.disabled {
   cursor: not-allowed;
@@ -66,8 +65,6 @@
 
 .house-colour-blue {
   background-color: #11089C;
-  border-radius: 50px;
-  cursor: pointer;
 }
 .house-colour-blue.disabled {
   cursor: not-allowed;
@@ -99,25 +96,21 @@
 }
 
 .seed-0 {
-  position: absolute;
   top: 0;
   left: 0;
 }
 
 .seed-1 {
-  position: absolute;
   top: 0;
   right: 0;
 }
 
 .seed-2 {
-  position: absolute;
   bottom: 0;
   left: 0;
 }
 
 .seed-3 {
-  position: absolute;
   bottom: 0;
   right: 0;
 }
