@@ -31,6 +31,7 @@
     "bootstrap": "^3.3.7",
     "custom-react-scripts": "0.2.2",
     "electron": "^2.0.0",
+    "lodash.sortby": "^4.7.0",
     "pushstate-server": "^3.0.0",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
@@ -39,7 +40,8 @@
     "redux-actions": "^2.3.0",
     "redux-thunk": "^2.2.0",
     "roll-a-die": "^1.2.0",
-    "shortid": "^2.2.8"
+    "shortid": "^2.2.8",
+    "toastr": "^2.1.4"
   },
   "devDependencies": {
     "nodemon": "^1.17.3"

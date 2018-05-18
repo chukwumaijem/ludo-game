@@ -1,4 +1,4 @@
-import { moveSeed } from '../actions/gameData';
+import { moveSeed, sendNotification } from '../actions/gameData';
 import store from '../store';
 
 import { startPoint, newSeedPosition } from './seedPath.js';
@@ -23,7 +23,7 @@ export function setColours(state, action) {
  * 
  * gets the house a seed belongs to
  */
-function findSeedGroup(state, seedId) {
+export function findSeedGroup(state, seedId) {
   let house;
   switch (seedId.substr(0, 2)) {
     case 'H1':
@@ -120,14 +120,36 @@ function makeSeedMove(options) {
  * 
  * Hanldes conditions that can make a play invalid
  */
-function invalidPlay(state, seedId, moves) {
+function invalidPlay(state, seedId, moves, dispatch) {
   const position = getSeedPosition(state, seedId);
   const movesLeft = seedRemainingMoves(state, seedId);
   const movesSum = moves.reduce((a, b) => Number(a) + Number(b), 0);
 
-  if (position === 'still' && !moves.includes("6")) return true;
-  if (position === 'still' && movesSum - 6 > movesLeft) return true;
-  if (position !== 'still' && movesSum > movesLeft) return true;
+  if (position === 'still' && !moves.includes(6)) {
+
+    dispatch(sendNotification({
+      type: 'Error',
+      title: 'Throw a Six!',
+      message: 'A 6 is need to leave the house!'
+    }));
+    return true;
+  };
+  if (position === 'still' && movesSum - 6 > movesLeft) {
+    dispatch(sendNotification({
+      type: 'Error',
+      title: 'Too many Moves',
+      message: 'Remove some values to move seed.',
+    }));
+    return true;
+  };
+  if (position !== 'still' && movesSum > movesLeft) {
+    dispatch(sendNotification({
+      type: 'Error',
+      title: 'Too many Moves',
+      message: 'Remove some values to move seed.'
+    }));
+    return true;
+  };
 
   return false;
 }
@@ -139,14 +161,14 @@ function invalidPlay(state, seedId, moves) {
  * its positions on the game board.
  */
 export function setSeedPosition(data) {
-  const { seed: seedId, position: moves, dispatch } = data;
+  const { seed: seedId, position: moves, dispatch, cb } = data;
   const state = store.getState().gameData;
 
-  if (invalidPlay(state, seedId, moves)) {
+  if (invalidPlay(state, seedId, moves, dispatch)) {
     return;
   }
-  if (getSeedPosition(state, seedId) === 'still' && moves.includes("6")) {
-    moves.splice(moves.indexOf("6"), 1);
+  if (getSeedPosition(state, seedId) === 'still' && moves.includes(6)) {
+    moves.splice(moves.indexOf(6), 1);
     setTimeout(() => {
       const lastMove = (moves.length === 1) ? true : false;
       const seedPosition = startPoint(seedId);
@@ -171,4 +193,5 @@ export function setSeedPosition(data) {
       }, (j + 1) * 500);
     }
   }
+  cb();
 }

@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
+import { disableInactiveHouseSeed } from '../../actions';
 import HouseFrame from '../House';
 import { HRailFrame, VRailFrame } from '../Rails';
 import { getLudoSeeds } from '../../utils/moveSeed';
 
 class Houses extends Component {
+  componentDidMount() {
+    const playerTurn = this.props.gameData.playerTurn;
+    this.props.disableInactiveHouseSeed(playerTurn);
+  }
 
   render() {
     const gameBoardHeight = this.props.gameBoardHeight;
@@ -20,20 +26,42 @@ class Houses extends Component {
     return (
       <div className="" style={{ float: 'left' }}>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <HouseFrame houseHeight={houseHeight} houseColour={houseOneColour} houseCards={this.props.gameData.houseOneCards} />
-          <VRailFrame VRailHeight={VRailHeight} boxColour={houseTwoColour} boxPosition={'VT'} seedData={seedData} />
-          <HouseFrame houseHeight={houseHeight} houseColour={houseTwoColour} houseCards={this.props.gameData.houseTwoCards} />
+          <HouseFrame houseHeight={houseHeight} houseNumber={1} />
+          <VRailFrame
+            VRailHeight={VRailHeight}
+            boxColour={houseTwoColour}
+            boxPosition={'VT'}
+            seedData={seedData}
+          />
+          <HouseFrame houseHeight={houseHeight} houseNumber={2} />
         </div>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <HRailFrame HRailHeight={HRailHeight} position={"left"} boxColour={houseOneColour} boxPosition={'HL'} seedData={seedData} />
+          <HRailFrame
+            HRailHeight={HRailHeight}
+            position={"left"}
+            boxColour={houseOneColour}
+            boxPosition={'HL'}
+            seedData={seedData}
+          />
           <div className="home" style={{ width: HRailHeight, height: HRailHeight }}>
           </div>
-          <HRailFrame HRailHeight={HRailHeight} position={"right"} boxColour={houseFourColour} boxPosition={'HR'} seedData={seedData} />
+          <HRailFrame
+            HRailHeight={HRailHeight}
+            position={"right"}
+            boxColour={houseFourColour}
+            boxPosition={'HR'}
+            seedData={seedData}
+          />
         </div>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <HouseFrame houseHeight={houseHeight} houseColour={houseThreeColour} position={"left"} houseCards={this.props.gameData.houseThreeCards} />
-          <VRailFrame VRailHeight={VRailHeight} boxColour={houseThreeColour} boxPosition={'VB'} seedData={seedData} />
-          <HouseFrame houseHeight={houseHeight} houseColour={houseFourColour} position={"right"} houseCards={this.props.gameData.houseFourCards} />
+          <HouseFrame houseHeight={houseHeight} houseNumber={3} />
+          <VRailFrame
+            VRailHeight={VRailHeight}
+            boxColour={houseThreeColour}
+            boxPosition={'VB'}
+            seedData={seedData}
+          />
+          <HouseFrame houseHeight={houseHeight} position={"right"} houseNumber={4} />
         </div>
       </div>
     );
@@ -50,4 +78,9 @@ function mapStateToProps({ gameData, gameSettings }) {
     gameBoardHeight: gameSettings.gameBoardHeight
   }
 }
-export default connect(mapStateToProps)(Houses);
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({
+    disableInactiveHouseSeed,
+  }, dispatch);
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Houses);

@@ -7,6 +7,7 @@ import store from './store';
 // import registerServiceWorker from './registerServiceWorker';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'toastr/build/toastr.css';
 import './mystyles.css';
 
 class Game extends Component {
