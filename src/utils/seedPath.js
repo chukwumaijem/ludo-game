@@ -85,7 +85,7 @@ function hlPath(seedId, currentSeedPosition) {
  * first row(HL-0).
  */
 function hlZeroPath(seedId, currentSeedPosition) {
-  let newPosition, increment = parseInt(currentSeedPosition.substr(4, 1));
+  let newPosition, increment = parseInt(currentSeedPosition.substr(4, 1), 10);
   if (increment === 5) {
     newPosition = 'VT-50';
   } else {
@@ -102,11 +102,15 @@ function hlZeroPath(seedId, currentSeedPosition) {
  * second row(HL-1).
  */
 function hlOnePath(seedId, currentSeedPosition) {
-  let newPosition, increment = parseInt(currentSeedPosition.substr(4, 1));
+  let newPosition, increment = parseInt(currentSeedPosition.substr(4, 1), 10);
   if (seedId.substr(0, 2) !== 'H1') {
     newPosition = 'HL-00';
   } else {
-    newPosition = `${currentSeedPosition.substr(0, 4)}${increment + 1}`;
+    if (increment === 5) {
+      newPosition = 'home';
+    } else {
+      newPosition = `${currentSeedPosition.substr(0, 4)}${increment + 1}`;
+    }
   }
 
   return newPosition;
@@ -119,7 +123,7 @@ function hlOnePath(seedId, currentSeedPosition) {
  * third row(HL-2).
  */
 function hlTwoPath(seedId, currentSeedPosition) {
-  let newPosition, increment = parseInt(currentSeedPosition.substr(4, 1));
+  let newPosition, increment = parseInt(currentSeedPosition.substr(4, 1), 10);
   if (increment === 0) {
     newPosition = 'HL-10';
   } else {
@@ -137,7 +141,7 @@ function hlTwoPath(seedId, currentSeedPosition) {
  */
 function vtPath(seedId, currentSeedPosition) {
   let newPosition,
-    match=`${currentSeedPosition.substr(0, 3)}${currentSeedPosition.substr(4, 1)}`;
+    match = `${currentSeedPosition.substr(0, 3)}${currentSeedPosition.substr(4, 1)}`;
   switch (match) {
     case 'VT-0':
       newPosition = vtZeroPath(seedId, currentSeedPosition);
@@ -163,7 +167,7 @@ function vtPath(seedId, currentSeedPosition) {
  * the (*) was removed.
  */
 function vtZeroPath(seedId, currentSeedPosition) {
-  let newPosition, increment = parseInt(currentSeedPosition.substr(3, 1));
+  let newPosition, increment = parseInt(currentSeedPosition.substr(3, 1), 10);
   if (increment === 0) {
     newPosition = 'VT-01';
   } else {
@@ -181,11 +185,15 @@ function vtZeroPath(seedId, currentSeedPosition) {
  * the (*) was removed.
  */
 function vtOnePath(seedId, currentSeedPosition) {
-  let newPosition, increment = parseInt(currentSeedPosition.substr(3, 1));
+  let newPosition, increment = parseInt(currentSeedPosition.substr(3, 1), 10);
   if (seedId.substr(0, 2) !== 'H2') {
     newPosition = 'VT-02';
   } else {
-    newPosition = `${currentSeedPosition.substr(0, 3)}${increment + 1}1`;
+    if (increment === 5) {
+      newPosition = 'home';
+    } else {
+      newPosition = `${currentSeedPosition.substr(0, 3)}${increment + 1}1`;
+    }
   }
 
   return newPosition;
@@ -199,7 +207,7 @@ function vtOnePath(seedId, currentSeedPosition) {
  * the (*) was removed.
  */
 function vtTwoPath(seedId, currentSeedPosition) {
-  let newPosition, increment = parseInt(currentSeedPosition.substr(3, 1));
+  let newPosition, increment = parseInt(currentSeedPosition.substr(3, 1), 10);
   if (increment === 5) {
     newPosition = 'HR-00';
   } else {
@@ -241,7 +249,7 @@ function hrPath(seedId, currentSeedPosition) {
  * of the HR rail(HR-0).
  */
 function hrZeroPath(seedId, currentSeedPosition) {
-  let newPosition, increment = parseInt(currentSeedPosition.substr(4, 1));
+  let newPosition, increment = parseInt(currentSeedPosition.substr(4, 1), 10);
   if (increment === 5) {
     newPosition = 'HR-15';
   } else {
@@ -258,11 +266,15 @@ function hrZeroPath(seedId, currentSeedPosition) {
  * of the HR rail(HR-1).
  */
 function hrOnePath(seedId, currentSeedPosition) {
-  let newPosition, increment = parseInt(currentSeedPosition.substr(4, 1));
+  let newPosition, increment = parseInt(currentSeedPosition.substr(4, 1), 10);
   if (seedId.substr(0, 2) !== 'H4') {
     newPosition = 'HR-25';
   } else {
-    newPosition = `${currentSeedPosition.substr(0, 4)}${increment - 1}`;
+    if (increment === 0) {
+      newPosition = 'home';
+    } else {
+      newPosition = `${currentSeedPosition.substr(0, 4)}${increment - 1}`;
+    }
   }
 
   return newPosition;
@@ -275,7 +287,7 @@ function hrOnePath(seedId, currentSeedPosition) {
  * of the HR rail(HR-2).
  */
 function hrTwoPath(seedId, currentSeedPosition) {
-  let newPosition, increment = parseInt(currentSeedPosition.substr(4, 1));
+  let newPosition, increment = parseInt(currentSeedPosition.substr(4, 1), 10);
   if (increment === 0) {
     newPosition = 'VB-02';
   } else {
@@ -319,7 +331,7 @@ function vbPath(seedId, currentSeedPosition) {
  * the (*) was removed.
  */
 function vbZeroPath(seedId, currentSeedPosition) {
-  let newPosition, increment = parseInt(currentSeedPosition.substr(3, 1));
+  let newPosition, increment = parseInt(currentSeedPosition.substr(3, 1), 10);
   if (increment === 0) {
     newPosition = 'HL-25';
   } else {
@@ -337,11 +349,15 @@ function vbZeroPath(seedId, currentSeedPosition) {
  * the (*) was removed.
  */
 function vbOnePath(seedId, currentSeedPosition) {
-  let newPosition, increment = parseInt(currentSeedPosition.substr(3, 1));
+  let newPosition, increment = parseInt(currentSeedPosition.substr(3, 1), 10);
   if (seedId.substr(0, 2) !== 'H3') {
     newPosition = 'VB-50';
   } else {
-    newPosition = `${currentSeedPosition.substr(0, 3)}${increment - 1}1`;
+    if (increment === 0) {
+      newPosition = 'home';
+    } else {
+      newPosition = `${currentSeedPosition.substr(0, 3)}${increment - 1}1`;
+    }
   }
 
   return newPosition;
@@ -355,7 +371,7 @@ function vbOnePath(seedId, currentSeedPosition) {
  * the (*) was removed.
  */
 function vbTwoPath(seedId, currentSeedPosition) {
-  let newPosition, increment = parseInt(currentSeedPosition.substr(3, 1));
+  let newPosition, increment = parseInt(currentSeedPosition.substr(3, 1), 10);
   if (increment === 5) {
     newPosition = 'VB-51';
   } else {

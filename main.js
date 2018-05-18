@@ -3,8 +3,8 @@ const {app, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
 const nativeImage = require('electron').nativeImage;
-let win,
-  iconPath = nativeImage.createFromPath(path.join(__dirname, 'resources/images/icon.png'));
+let win;
+let iconPath = nativeImage.createFromPath(path.join(__dirname, 'src/assets/images/favicon.png'));
 
 function createWindow() {
   const displays = electron.screen.getPrimaryDisplay();
@@ -14,13 +14,15 @@ function createWindow() {
     height: parseInt(displays.workAreaSize.height * 0.9),
     icon: iconPath,
     title: "Ludo Game",
-    resizable: false
+    resizable: false,
+    webPreferences: {
+      nodeIntegration: false,
+    }
   });
 
   win.loadURL(url.format({
-    pathname: path.join(__dirname, 'app/index.html'),
+    pathname: path.join(__dirname, 'build/index.html'),
     protocol: 'file:',
-    slashes: true
   }));
 
   // Not necessary keyboard Ctrl+Shift+I opens the inspector

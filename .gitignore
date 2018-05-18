@@ -1,2 +1,4 @@
 node_modules
-app/build
+build
+.env
+.DS_Store

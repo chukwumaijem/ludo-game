@@ -19,46 +19,56 @@
 
 .home {
   display: inline-block;
-  background-image: url('../resources/images/home.jpg');
+  background-image: url('./assets/images/home.jpg');
   background-size: 100% 100%;
+  position: relative;
 }
 
 .game-frame {
   margin: 10px 10px;
 }
 
+.house-seeds {
+  border-radius: 50px;
+  cursor: pointer;
+  position: absolute;
+}
 .house-colour-green {
   background-color: #218F08;
-  border-radius: 50px;
 }
-
+.house-colour-green.disabled {
+  cursor: not-allowed;
+}
 .house-colour-green-light {
   background-color: #95F77F;
 }
 
 .house-colour-red {
   background-color: #ED0707;
-  border-radius: 50px;
 }
-
+.house-colour-red.disabled {
+  cursor: not-allowed;
+}
 .house-colour-red-light {
   background-color: #F7A37F;
 }
 
 .house-colour-yellow {
-  background-color: #EFEF0B;
-  border-radius: 50px;
+  background-color: rgb(202, 202, 57);
 }
-
+.house-colour-yellow.disabled {
+  cursor: not-allowed;
+}
 .house-colour-yellow-light {
   background-color: #F0F77F;
 }
 
 .house-colour-blue {
   background-color: #11089C;
-  border-radius: 50px;
 }
-
+.house-colour-blue.disabled {
+  cursor: not-allowed;
+}
 .house-colour-blue-light {
   background-color: #7FA2F7;
 }
@@ -83,4 +93,24 @@
 
 .box-blue {
   background-color: #7FA2F7;
+}
+
+.seed-0 {
+  top: 0;
+  left: 0;
+}
+
+.seed-1 {
+  top: 0;
+  right: 0;
+}
+
+.seed-2 {
+  bottom: 0;
+  left: 0;
+}
+
+.seed-3 {
+  bottom: 0;
+  right: 0;
 }

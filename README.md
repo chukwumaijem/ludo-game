@@ -1,18 +1,27 @@
 # Ludo Game #
 
-### What is this repository for? ###
+### What is this repository for?
+Desktop Ludo game built with React and Electron.
 
-* Desktop Ludo game built with React and Electron.
+- Install nvm, node, npm, and yarn. Node 8.9.4 is the recommened minimum.
 
-### How do I get set up? ###
-* Install node and npm
+### How do preview the app? ###
+- Run *_nvm use_* to set node version to 8.9.4
+- Run *_yarn install_* in the application root to install dependencies
+- Run *_npm run preview_* to view and play the game
 
-* Install electron globally if you do not have it already using
-	*_npm install_* -g electron
+### How do I get set up for development?
+- Run *_nvm use_* to set node version to 8.9.4
+- Run *_yarn install_* in the application root to install dependencies
+- Run *_npm run work_* to start working
+- Use *_npm run dev_* if you prefer to use it on the browser
 
-* run *_npm  install_* in the application root to install dependencies
+### How do I build the app? (Not setup yet!)
+- Run *_nvm use_* to set node version to 8.9.4
+- Run *_yarn install_* in the application root to install dependencies
+- Run *_npm run build_* to build the app for your platform
 
-* run *_npm run compile* to build the app
 
-* run *_npm start_* to start the app
-
+### Screenshot
+Game Screen
+![alt text](./screenshots/gamescreen.png)

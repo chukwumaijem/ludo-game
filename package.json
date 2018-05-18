@@ -1,18 +1,20 @@
 {
   "name": "ludo-game",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A desktop ludo game",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
-    "start": "electron main.js",
-    "compile": "./node_modules/.bin/webpack -p",
-    "watch": "./node_modules/.bin/webpack -d --watch",
+    "start": "node_modules/.bin/electron main.js",
     "work": "npm run watch & npm start",
-    "run:web": "npm run compile && pushstate-server app"
+    "web": "npm run watch & pushstate-server build",
+    "watch": "nodemon --watch ./src --watch main.js --exec react-scripts build",
+    "build:client:production": "react-scripts build",
+    "preview": "npm run build:client:production && npm start",
+    "dev": "react-scripts start"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://synedrio@bitbucket.org/synedrio/ludo-game.git"
+    "url": "git@github.com:chukwumaijem/ludo-game.git"
   },
   "keywords": [
     "ludo",
@@ -24,22 +26,24 @@
   ],
   "author": "Chuwkuma Ezumezu",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/synedrio/ludo-game#readme",
+  "homepage": ".",
   "dependencies": {
-    "babel-core": "^6.18.2",
-    "babel-loader": "^6.2.8",
-    "babel-preset-es2015": "^6.18.0",
-    "babel-preset-react": "^6.16.0",
-    "babel-preset-stage-2": "^6.18.0",
     "bootstrap": "^3.3.7",
-    "css-loader": "^0.26.1",
-    "file-loader": "^0.9.0",
-    "jquery": "^3.1.1",
+    "custom-react-scripts": "0.2.2",
+    "electron": "^2.0.0",
+    "lodash.sortby": "^4.7.0",
     "pushstate-server": "^3.0.0",
-    "react": "^15.4.1",
-    "react-dom": "^15.4.1",
-    "style-loader": "^0.13.1",
-    "url-loader": "^0.5.7",
-    "webpack": "^1.13.3"
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-redux": "^5.0.7",
+    "redux": "^4.0.0",
+    "redux-actions": "^2.3.0",
+    "redux-thunk": "^2.2.0",
+    "roll-a-die": "^1.2.0",
+    "shortid": "^2.2.8",
+    "toastr": "^2.1.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.3"
   }
 }
