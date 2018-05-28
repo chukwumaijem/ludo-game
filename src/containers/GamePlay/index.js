@@ -39,9 +39,12 @@ class GameFrame extends React.Component {
       justifyContent: 'center'
     };
     return (
-      <div style={gameContainerStyle}>
-        <Houses />
-        <SideBoard />
+
+      <div className="game-frame">
+        <div style={gameContainerStyle}>
+          <Houses />
+          <SideBoard />
+        </div>
       </div>
     );
   }

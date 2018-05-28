@@ -8,14 +8,14 @@ import Home from './containers/HomePage';
 import store from './store';
 // import registerServiceWorker from './registerServiceWorker';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'semantic-ui-css/semantic.min.css';
 import 'toastr/build/toastr.css';
 import './mystyles.css';
 
 const Game = () => {
   return (<Provider store={store}>
     <Router>
-      <div className="game-frame">
+      <div>
         <Route exact path="/" component={Home} />
         <Route path="/game" component={GameFrame} />
       </div>
