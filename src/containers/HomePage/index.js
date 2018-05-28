@@ -1,11 +1,26 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Button, Container, Grid } from 'semantic-ui-react';
 
-const Home = () => <div>
-  <div>
-    <div>Simple Game Description</div>
-    <Link to="game">Start Game Action Item</Link>
-  </div>
-</div>;
+import styles from './HomePage.module.css';
 
-export default Home;
+const HomePage = () => <Container fluid>
+  <Grid columns={2} relaxed divided>
+    <div className={styles.description}>
+      <Grid.Column>
+        <div className={styles.section}>
+          Simple Game Description
+        </div>
+      </Grid.Column>
+      <Grid.Column>
+        <div className={styles.section}>
+          <Link to='/create'>
+            <Button primary>Create Game Room</Button>
+          </Link>
+        </div>
+      </Grid.Column>
+    </div>
+  </Grid>
+</Container>;
+
+export default HomePage;

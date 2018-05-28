@@ -1,0 +1,12 @@
+.section {
+  display: inline-block;
+  text-align: center;
+}
+
+.description {
+  display: flex;
+  justify-content: space-around;
+  padding: 50px 10px;
+  width: 100%;
+  margin: 20px 0px;
+}
