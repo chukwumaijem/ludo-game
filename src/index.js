@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import GameFrame from './containers/GamePlay';
 import HomePage from './containers/HomePage';
 import Header from './components/Header';
+import Footer from './components/Footer';
 
 import store from './store';
 // import registerServiceWorker from './registerServiceWorker';
@@ -20,7 +21,7 @@ const Home = () => <div>
     <Route exact path="/" component={HomePage} />
     <Route path="how-to-play" />
   </Switch>
-  <div>Footer</div>
+  <Footer />
 </div>;
 
 const Game = () => {
