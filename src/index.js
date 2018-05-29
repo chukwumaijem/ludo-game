@@ -7,6 +7,7 @@ import GameFrame from './containers/GamePlay';
 import HomePage from './containers/HomePage';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import CreateGame from './containers/CreateGame';
 
 import store from './store';
 // import registerServiceWorker from './registerServiceWorker';
@@ -19,7 +20,8 @@ const Home = () => <div>
   <Header />
   <Switch>
     <Route exact path="/" component={HomePage} />
-    <Route path="how-to-play" />
+    <Route path="/create" component={CreateGame} />
+    <Route path="/how-to-play" />
   </Switch>
   <Footer />
 </div>;
