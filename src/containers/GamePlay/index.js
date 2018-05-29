@@ -10,9 +10,10 @@ import Houses from '../../components/Houses';
 class GameFrame extends React.Component {
   state = {}
   componentDidMount() {
+    const winHeight = window.innerHeight * 0.95;
     const settings = {
-      gameBoardHeight: this.props.gameBoardHeight,
-      sideBoardWidth: window.innerWidth - this.props.gameBoardHeight,
+      gameBoardHeight: winHeight,
+      sideBoardWidth: window.innerWidth - winHeight,
     };
     const colours = this.props.colours;
     if (colours) {
@@ -31,10 +32,19 @@ class GameFrame extends React.Component {
   }
 
   render() {
+    const winSize = window.innerHeight * 0.95;
+    const gameContainerStyle = {
+      height: winSize,
+      display: 'flex',
+      justifyContent: 'center'
+    };
     return (
-      <div>
-        <Houses />
-        <SideBoard />
+
+      <div className="game-frame">
+        <div style={gameContainerStyle}>
+          <Houses />
+          <SideBoard />
+        </div>
       </div>
     );
   }
