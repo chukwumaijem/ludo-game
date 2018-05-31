@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Step, Container, Segment, Button, Icon } from 'semantic-ui-react'
+import { Step, Container, Segment, Button, Icon, Message, Input, Grid } from 'semantic-ui-react'
 
 import styles from './CreateGame.module.css';
 
@@ -7,6 +7,7 @@ class CreateGame extends Component {
   state = {
     activeBreadCrumb: 'players',
     disableSettings: false,
+    isMessageVisible: false,
   };
 
   renderBreadCrumbs = () => {
@@ -87,9 +88,20 @@ class CreateGame extends Component {
     this.setState({ activeBreadCrumb: steps[currentIndex + 1] });
   };
 
+  copyGameLink = () => {
+    const roomLink = 'some really long link';
+    const link = document.getElementById('gameLink');
+    link.value = roomLink;
+    link.select();
+    document.execCommand('copy');
+    this.setState({ isMessageVisible: true });
+    setTimeout(() => this.setState({ isMessageVisible: false }), 3000);
+  };
+
   render() {
-    const { activeBreadCrumb, disableSettings } = this.state;
+    const { activeBreadCrumb, disableSettings, isMessageVisible } = this.state;
     const lastSection = activeBreadCrumb === 'audience';
+    const roomLink = '';
     return (
       <Container fluid textAlign="center" className={styles.container}>
         {this.renderBreadCrumbs()}
@@ -108,9 +120,25 @@ class CreateGame extends Component {
           </Segment>
           <Button color={'teal'} onClick={this.generateRoomId}>Start With Defaults</Button>
         </Segment>
-        <Segment disabled={!disableSettings} secondary>
-          RoomId: ''
-          <Button>Join Room</Button>
+        <Segment disabled={!disableSettings} padded>
+          <Grid textAlign={'left'}>
+            <Grid.Row columns={3}>
+              <Grid.Column width={8}>
+                <span>
+                  GameLink: <Input as="span" id="gameLink" value={roomLink} type="text" transparent/>
+                </span>
+              </Grid.Column>
+              <Grid.Column width={4}>
+                <Button disabled={!disableSettings} onClick={this.copyGameLink}>Copy</Button>
+                <Message info size="mini" hidden={!isMessageVisible} compact>
+                  Copied!
+                </Message>
+              </Grid.Column>
+              <Grid.Column width={3}>
+                <Button disabled={!disableSettings}>Join Room</Button>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
         </Segment>
       </Container>
     );
