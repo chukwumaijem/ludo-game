@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Step, Container, Segment, Button, Icon, Message, Input, Grid, Form, Select, Radio } from 'semantic-ui-react'
+import { Step, Container, Segment, Button, Icon, Message, Input, Grid, Form, Select } from 'semantic-ui-react'
 
 import styles from './CreateGame.module.css';
 
@@ -8,14 +8,9 @@ class CreateGame extends Component {
     activeBreadCrumb: 'players',
     disableSettings: false,
     isMessageVisible: false,
-    options: [
-      { key: '1', text: 'One', value: 1, active: true },
-      { key: '2', text: 'Two', value: 2 },
-      { key: '3', text: 'Three', value: 3 },
-      { key: '4', text: 'Four', value: 4 },
-    ],
     houseAssignment: 'roundRobin',
-    gameStarter: 'playerOne'
+    gameStarter: 'playerOne',
+    numberOfPlayers: 4,
   };
 
   renderBreadCrumbs = () => {
@@ -53,54 +48,63 @@ class CreateGame extends Component {
     );
   };
 
-  handleChange = (e, f, g, h) => {
-    console.log('=====e==', e)
-    console.log('=====f==', f)
-    console.log('=====g==', g)
-    console.log('=====h==', h)
+  handleChange = ({ type, value }) => {
+    this.setState({ [type]: value });
   };
 
   renderPlayerSettings = () => {
-    const { options, houseAssignment, gameStarter } = this.state;
+    const { houseAssignment, gameStarter, numberOfPlayers } = this.state;
+    const options = [
+      // { key: '1', text: 'One', value: 1 }, playing with COM not supported ATM
+      { key: '2', text: 'Two', value: 2 },
+      { key: '3', text: 'Three', value: 3 },
+      { key: '4', text: 'Four', value: 4 },
+    ];
     return (
       <Form>
         <Form.Group inline>
-          <Form.Field control={Select} label='Number of players' options={options} onClick={this.handleChange}/>
+          <Form.Field
+            control={Select}
+            label='Number of players'
+            options={options}
+            onChange={(e, values) => this.handleChange({ type: 'numberOfPlayers', value: values.value })}
+            value={numberOfPlayers}
+          />
         </Form.Group>
         <Form.Group width="8" inline>
           <label>Assign Player Houses</label>
           <Form.Radio
-            label='Random'
-            value='random'
-            checked={houseAssignment === 'random'}
-            onChange={this.handleChange}
-          />
-          <Form.Radio
             label='Round Robin'
             value='roundRobin'
             checked={houseAssignment === 'roundRobin'}
-            onChange={this.handleChange}
+            onChange={() => this.handleChange({ type: 'houseAssignment', value: 'roundRobin' })}
+          />
+          <Form.Radio
+            label='Random'
+            value='random'
+            checked={houseAssignment === 'random'}
+            onChange={() => this.handleChange({ type: 'houseAssignment', value: 'random' })}
           />
         </Form.Group>
         <Form.Group width="8" inline>
           <label>Which Player starts the game</label>
           <Form.Radio
-            label='Playr One'
+            label='Player One'
             value='playerOne'
             checked={gameStarter === 'playerOne'}
-            onChange={this.handleChange}
+            onChange={() => this.handleChange({ type: 'gameStarter', value: 'playerOne' })}
           />
           <Form.Radio
             label='Random'
             value='md'
             checked={gameStarter === 'random'}
-            onChange={this.handleChange}
+            onChange={() => this.handleChange({ type: 'gameStarter', value: 'random' })}
           />
           <Form.Radio
             label='First To Join'
             value='md'
             checked={gameStarter === 'firstToJoin'}
-            onChange={this.handleChange}
+            onChange={() => this.handleChange({ type: 'gameStarter', value: 'firstToJoin' })}
           />
         </Form.Group>
       </Form>
@@ -160,7 +164,7 @@ class CreateGame extends Component {
       <Container fluid textAlign="center" className={styles.container}>
         {this.renderBreadCrumbs()}
         <Segment padded size={'massive'} clearing className={styles.formContainer}>
-          <Segment raised compact>
+          <Segment raised compact size='massive'>
             <div className={styles.formInputs}>
               {activeBreadCrumb === 'players' && this.renderPlayerSettings()}
               {activeBreadCrumb === 'houses' && this.renderHouseSettings()}
