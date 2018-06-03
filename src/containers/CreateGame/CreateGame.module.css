@@ -1,3 +1,16 @@
 .container {
   padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+.formInputs {
+  width: 600px;
+  text-align: left;
+  display: flex;
+  justify-content: center;
+}
+.formContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
