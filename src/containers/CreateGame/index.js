@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Step, Container, Segment, Button, Icon, Message, Input, Grid } from 'semantic-ui-react'
+import { Step, Container, Segment, Button, Icon, Message, Input, Grid, Form, Select, Radio } from 'semantic-ui-react'
 
 import styles from './CreateGame.module.css';
 
@@ -8,6 +8,14 @@ class CreateGame extends Component {
     activeBreadCrumb: 'players',
     disableSettings: false,
     isMessageVisible: false,
+    options: [
+      { key: '1', text: 'One', value: 1, active: true },
+      { key: '2', text: 'Two', value: 2 },
+      { key: '3', text: 'Three', value: 3 },
+      { key: '4', text: 'Four', value: 4 },
+    ],
+    houseAssignment: 'roundRobin',
+    gameStarter: 'playerOne'
   };
 
   renderBreadCrumbs = () => {
@@ -45,11 +53,57 @@ class CreateGame extends Component {
     );
   };
 
+  handleChange = (e, f, g, h) => {
+    console.log('=====e==', e)
+    console.log('=====f==', f)
+    console.log('=====g==', g)
+    console.log('=====h==', h)
+  };
+
   renderPlayerSettings = () => {
+    const { options, houseAssignment, gameStarter } = this.state;
     return (
-      <div>
-        Players
-      </div>
+      <Form>
+        <Form.Group inline>
+          <Form.Field control={Select} label='Number of players' options={options} onClick={this.handleChange}/>
+        </Form.Group>
+        <Form.Group width="8" inline>
+          <label>Assign Player Houses</label>
+          <Form.Radio
+            label='Random'
+            value='random'
+            checked={houseAssignment === 'random'}
+            onChange={this.handleChange}
+          />
+          <Form.Radio
+            label='Round Robin'
+            value='roundRobin'
+            checked={houseAssignment === 'roundRobin'}
+            onChange={this.handleChange}
+          />
+        </Form.Group>
+        <Form.Group width="8" inline>
+          <label>Which Player starts the game</label>
+          <Form.Radio
+            label='Playr One'
+            value='playerOne'
+            checked={gameStarter === 'playerOne'}
+            onChange={this.handleChange}
+          />
+          <Form.Radio
+            label='Random'
+            value='md'
+            checked={gameStarter === 'random'}
+            onChange={this.handleChange}
+          />
+          <Form.Radio
+            label='First To Join'
+            value='md'
+            checked={gameStarter === 'firstToJoin'}
+            onChange={this.handleChange}
+          />
+        </Form.Group>
+      </Form>
     );
   };
 
@@ -105,11 +159,13 @@ class CreateGame extends Component {
     return (
       <Container fluid textAlign="center" className={styles.container}>
         {this.renderBreadCrumbs()}
-        <Segment padded size={'massive'} clearing>
-          <Segment raised>
-            {activeBreadCrumb === 'players' && this.renderPlayerSettings()}
-            {activeBreadCrumb === 'houses' && this.renderHouseSettings()}
-            {activeBreadCrumb === 'audience' && this.renderAudienceSettings()}
+        <Segment padded size={'massive'} clearing className={styles.formContainer}>
+          <Segment raised compact>
+            <div className={styles.formInputs}>
+              {activeBreadCrumb === 'players' && this.renderPlayerSettings()}
+              {activeBreadCrumb === 'houses' && this.renderHouseSettings()}
+              {activeBreadCrumb === 'audience' && this.renderAudienceSettings()}
+            </div>
             <Button
               color={'blue'}
               onClick={this.nextStep}
@@ -125,7 +181,7 @@ class CreateGame extends Component {
             <Grid.Row columns={3}>
               <Grid.Column width={8}>
                 <span>
-                  GameLink: <Input as="span" id="gameLink" value={roomLink} type="text" transparent/>
+                GameLink: <Input as="span" id="gameLink" value={roomLink} type="text" transparent/>
                 </span>
               </Grid.Column>
               <Grid.Column width={4}>
