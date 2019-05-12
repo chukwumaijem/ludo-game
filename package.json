@@ -28,24 +28,24 @@
   "license": "ISC",
   "homepage": ".",
   "dependencies": {
+    "bootstrap": "^4.3.1",
     "custom-react-scripts": "0.2.2",
     "electron": "^2.0.0",
     "lodash.sortby": "^4.7.0",
     "pushstate-server": "^3.0.0",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2",
-    "react-redux": "^5.0.7",
-    "react-router-dom": "^4.2.2",
-    "redux": "^4.0.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-redux": "^7.0.3",
+    "react-router-dom": "^5.0.0",
+    "redux": "^4.0.1",
     "redux-actions": "^2.3.0",
     "redux-thunk": "^2.2.0",
     "roll-a-die": "^1.2.0",
-    "semantic-ui-css": "^2.3.1",
-    "semantic-ui-react": "^0.80.2",
     "shortid": "^2.2.8",
     "toastr": "^2.1.4"
   },
   "devDependencies": {
-    "nodemon": "^1.17.3"
+    "nodemon": "^1.17.3",
+    "redux-devtools-extension": "^2.13.8"
   }
 }
