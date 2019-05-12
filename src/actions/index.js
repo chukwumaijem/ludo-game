@@ -9,6 +9,8 @@ export {
   changeTurn,
   setNumberOfPlayers,
   setDisabled,
+  removePlayerFromList,
+  setResultToGlobalState,
 } from './gameData';
 
 export {

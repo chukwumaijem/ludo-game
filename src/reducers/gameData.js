@@ -1,13 +1,13 @@
 import Types from '../actions/actionTypes';
 import { setColours } from '../utils/moveSeed';
-import { still, movesLeft, home } from '../utils/constants';
+import { still, movesLeft } from '../utils/constants';
 
 // movesLeft here is the minimum number of moves needed to finish after coming out of the house.
 const initialState = {
   houseOneCards: {
     'H1-C1': { position: still, movesLeft: movesLeft },
     'H1-C2': { position: still, movesLeft: movesLeft },
-    'H1-C3': { position: home, movesLeft: movesLeft },
+    'H1-C3': { position: still, movesLeft: movesLeft },
     'H1-C4': { position: still, movesLeft: movesLeft },
     'H1-Colour': 'blue'
   },
@@ -51,7 +51,8 @@ const initialState = {
     green: false,
     blue: false,
     yellow: false,
-  }
+  },
+  dieResult: [],
 };
 
 function nextTurn(state) {
@@ -63,7 +64,6 @@ function nextTurn(state) {
 
   return playingHouses[playingIndex + 1].replace('H', 'P');
 }
-
 function setHouseOrder(house) {
   const houses = house.sort(); // should be in order ['H1', 'H2', 'H4', 'H3'];
   if (houses.includes('H3') && houses.includes('H4')) {
@@ -74,15 +74,16 @@ function setHouseOrder(house) {
   }
   return houses;
 }
+
 function setInitialPlayerTurn(state) {
   const { disabledHouses, houseColors } = state;
   const avail = Object.keys(disabledHouses).filter(key => !disabledHouses[key]);
   const availPlayers = avail[Math.floor(Math.random() * avail.length)];
-  const availHouses = {...houseColors};
+  const availHouses = { ...houseColors };
   for (let item in availHouses) {
     if (!avail.includes(availHouses[item]))
       delete availHouses[item];
-   }
+  }
   const playingHouses = Object.keys(availHouses);
 
   return {
@@ -92,6 +93,17 @@ function setInitialPlayerTurn(state) {
     playingHouses: setHouseOrder(playingHouses),
   };
 }
+
+function removePlayerFromlist(state, player) {
+  const { playingHouses } = state;
+  const indexOfHouse = playingHouses.findIndex(function (element) {
+    return element.includes(player);
+  });
+  const houseCopy = [...playingHouses]
+  houseCopy.splice(indexOfHouse, 1);
+  return houseCopy;
+}
+
 
 export default function gameData(state = initialState, action) {
   switch (action.type) {
@@ -171,6 +183,16 @@ export default function gameData(state = initialState, action) {
           playerTurn: playerToStart,
           playingHouses,
         },
+      );
+    case Types.REMOVE_PLAYER_FROM_LIST:
+      return Object.assign({},
+        state,
+        { playingHouses: removePlayerFromlist(state, action.payload) },
+      );
+    case Types.SET_RESULT_TO_GLOBAL:
+      return Object.assign({},
+        state,
+        { dieResult: action.payload },
       );
     default:
       return state;

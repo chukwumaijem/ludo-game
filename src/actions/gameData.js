@@ -32,7 +32,6 @@ function setDieCastComplete() {
   return createAction(Types.DIE_CAST_COMPLETE)();
 }
 export function dieCastComplete() {
-
   return setDieCastComplete();
 }
 
@@ -93,4 +92,16 @@ export function setDisabled(data) {
     await dispatch(setDisabledHouse(data));
     return dispatch(setDisabledHousesComplete());
   }
+}
+
+export function removePlayerFromList(player) {
+  return createAction(Types.MOVE_SEED_TO_POSITION)(player);
+}
+
+function resultToGlobalState(data) {
+  return createAction(Types.SET_RESULT_TO_GLOBAL)(data);
+}
+
+export function setResultToGlobalState(data) {
+  return resultToGlobalState(data)
 }

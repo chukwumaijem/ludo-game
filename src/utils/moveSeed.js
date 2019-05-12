@@ -1,8 +1,13 @@
-import { moveSeed, sendNotification } from '../actions/gameData';
+import { moveSeed,
+  sendNotification,
+  removePlayerFromList,
+  changeTurn,
+  setResultToGlobalState,
+} from '../actions/gameData';
 import store from '../store';
 
 import { startPoint, newSeedPosition } from './seedPath.js';
-import { still, movesLeft, home } from './constants';
+import { still, movesLeft, home, NUMBER } from './constants';
 
 /**
  * setColours
@@ -78,6 +83,30 @@ export function getLudoSeeds(gameData) {
 
   return seeds;
 }
+
+/**
+ * checkForWins
+ * 
+ * Takes a seedgroup, checks if all seeds are home.
+ * If true, send notification and remove house from loop
+ */
+function checkForWins(seedGroup, dispatch) {
+  const keys = Object.keys(seedGroup);
+  const found = keys.find(function (key) {
+    const item = seedGroup[key];
+    return item.position !== home || item.movesLeft > 0;
+  });
+
+  if (found) return;
+  const number = keys[0].substr(1, 1);
+  dispatch(removePlayerFromList(number));
+  dispatch(sendNotification({
+    type: 'success',
+    title: 'Congrats',
+    message: `House ${NUMBER[number]} has finished.`,
+  }));
+}
+
 /**
  * killSeed
  * 
@@ -106,6 +135,7 @@ function killSeed(state, dispatch, seedPosition, movingSeed) {
     }));
 
     seedGroup = findSeedGroup(state, movingSeed);
+    checkForWins(seedGroup, dispatch);
     seedGroup[movingSeed].position = home;
     seedGroup[movingSeed].movesLeft = 0;
     dispatch(moveSeed(seedGroup));
@@ -128,9 +158,38 @@ function makeSeedMove(options) {
     seedGroup[seedId].movesLeft = movesLeft - 1;
   }
   dispatch(moveSeed(seedGroup))
+
+  if (lastMove && seedGroup[seedId].movesLeft === 0) {
+    seedGroup[seedId].position = home;
+    dispatch(sendNotification({
+      type: 'Info',
+      title: "Done",
+      message: `${seedId} has completed its trip.`,
+    }));
+    checkForWins(seedGroup, dispatch);
+  }
   if (lastMove && seedPosition !== home) {
     killSeed(state, dispatch, seedPosition, seedId);
   }
+}
+
+function hasAlternativeMove(seedGroup) {
+  const positions = [];
+  const movesLeft = [];
+  Object.keys(seedGroup).forEach(group => {
+    positions.push(seedGroup[group].position)
+    movesLeft.push(seedGroup[group].movesLeft)
+  });
+  const moves = store.getState().gameData.dieResult.map(result => result.value);
+
+  if (moves.includes(6) && positions.includes(still)) return true;
+  for (let j = 0; j < movesLeft.length; j++) {
+    for (let i = 0; i < movesLeft.length; i++) {
+      if (movesLeft[i] >= moves[j]) return true;
+    }
+  }
+
+  return false;
 }
 
 /**
@@ -160,13 +219,19 @@ function invalidPlay(state, seedId, moves, dispatch) {
     }));
     return true;
   };
+
   if (position !== still && movesSum > movesLeft) {
-    dispatch(sendNotification({
-      type: 'Error',
-      title: 'Too many Moves',
-      message: 'Remove some values to move seed.'
-    }));
-    return true;
+    const seedGroup = findSeedGroup(state, seedId);
+    if (!hasAlternativeMove(seedGroup)) {
+      dispatch(setResultToGlobalState([]));
+      return dispatch(changeTurn());
+    } else {
+      dispatch(sendNotification({
+        type: 'Error',
+        title: 'Too many Moves',
+        message: 'Remove some values to move seed.'
+      }));
+    }
   };
 
   return false;

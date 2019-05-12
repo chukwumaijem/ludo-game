@@ -10,7 +10,8 @@ import {
   moveSeedToPosition,
   dieCastComplete,
   changeTurn,
-  clearNotification
+  clearNotification,
+  setResultToGlobalState
 } from '../../actions';
 import { findSeedGroup } from '../../utils/moveSeed';
 import GameChat from '../GameChat';
@@ -34,6 +35,17 @@ class SideBoard extends Component {
   state = {
     element: null,
     results: [],
+    repeatCast: false,
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (props.dieResult !== state.result) {
+      return {
+        ...state,
+        results: props.dieResult,
+      };
+    }
+    return null;
   }
 
   componentDidMount() {
@@ -43,12 +55,11 @@ class SideBoard extends Component {
     });
   }
 
-  canPlayPlay = () => {
+  checkIfPlayerHasValidMoves = (results) => {
     const { playerTurn } = this.props;
-    const { results } = this.state;
     const groups = findSeedGroup(this.props.gameData, `H${playerTurn.substr(1, 1)}`);
     const seedGroup = sortBy(groups, (o) => o.movesLeft).reverse();
-    // srting and reversing here to first test and remove seeds that are still
+    // sorting and reversing here to first test and remove seeds that are still
     let canPlay = 0;
     const resultCollection = results.map(result => result.value);
     const resultsSum = resultCollection.reduce((a, b) => a + b, 0);
@@ -70,21 +81,23 @@ class SideBoard extends Component {
   }
 
   setDieRollResult = (results) => {
+    if (results[0] === 6 && results[1] === 6) {
+      this.setState({ repeatCast: true });
+    } else {
+      this.setState({ repeatCast: false });
+    }
+
     const preResults = this.state.results;
     const resultObjects = results.map(result => {
       return { id: shortId.generate(), value: result, selected: false };
     });
+    const resultsConcat = [...preResults, ...resultObjects];
+    this.props.setResultToGlobalState(resultsConcat);
 
-    this.setState({
-      results: [
-        ...preResults, ...resultObjects
-      ]
-    }, () => {
-      if (results[0] !== 6 || results[1] !== 6) {
-        this.props.dieCastComplete();
-        this.canPlayPlay()
-      }
-    });
+    if (results[0] !== 6 || results[1] !== 6) {
+      this.props.dieCastComplete();
+      this.checkIfPlayerHasValidMoves(resultsConcat)
+    }
   }
 
   rollDice = () => {
@@ -110,11 +123,11 @@ class SideBoard extends Component {
 
   endTurn = () => {
     this.props.changeTurn();
-    this.setState({ results: [] })
+    this.props.setResultToGlobalState([]);
   }
 
   moveSeed = () => {
-    const results = this.state.results;
+    const { results, repeatCast } = this.state;
     const selectedSeed = this.props.selectedSeed;
     const indexes = [];
     const selectedMoves = results.filter((result, index) => {
@@ -126,8 +139,9 @@ class SideBoard extends Component {
 
     this.props.moveSeedToPosition(selectedSeed, selectedMoves, () => {
       const resultsLeft = results.filter(result => indexes.indexOf(result.id) < 0);
+      this.props.setResultToGlobalState(resultsLeft);
       this.setState({ results: resultsLeft });
-      if (!resultsLeft.length) {
+      if (!resultsLeft.length && !repeatCast) {
         this.endTurn()
       }
     });
@@ -142,7 +156,7 @@ class SideBoard extends Component {
         <input
           disabled={!playDisabled}
           onClick={this.moveSeed}
-          className="btn btn-primary countSeed playButton"
+          className={`btn playButton ${colour.toLowerCase()}-playing-body`}
           value="Play It"
         />
         <div className="selectedSeedContainer">
@@ -216,7 +230,7 @@ class SideBoard extends Component {
             <div id="roll-die"></div>
           </div>
           <div
-            className={`rollDieButton ${disableButton ? 'disabled' : ''}`}
+            className={`${colour.toLowerCase()}-playing-body rollDieButton ${disableButton ? 'disabled' : ''}`}
             onClick={this.rollDice}>
             Roll Dice
           </div>
@@ -234,6 +248,7 @@ function mapStateToProps({ gameSettings, gameData }) {
     selectedSeed: gameData.selectedSeed,
     dieCast: gameData.dieCast,
     gameData,
+    dieResult: gameData.dieResult,
   };
 }
 
@@ -243,6 +258,7 @@ function mapDispatchToProps(dispatch) {
     dieCastComplete,
     changeTurn,
     clearNotification,
+    setResultToGlobalState,
   }, dispatch);
 }
 
