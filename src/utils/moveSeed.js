@@ -2,6 +2,7 @@ import { moveSeed, sendNotification } from '../actions/gameData';
 import store from '../store';
 
 import { startPoint, newSeedPosition } from './seedPath.js';
+import { still, movesLeft, home } from './constants';
 
 /**
  * setColours
@@ -85,14 +86,29 @@ export function getLudoSeeds(gameData) {
  */
 function killSeed(state, dispatch, seedPosition, movingSeed) {
   const seeds = getLudoSeeds(state);
-  const seedId = Object.keys(seeds).filter((seed) => {
-    return seeds[seed].position === seedPosition;
-  }).toString();
+  const seedsInSamePosition = Object.keys(seeds).filter((seed) => {
+    return (seed !== movingSeed) && (seeds[seed].position === seedPosition);
+  });
+
+  const seedId = seedsInSamePosition && seedsInSamePosition.length > 0 ?
+    seedsInSamePosition[0].toString() : null;
 
   if (seedId && (movingSeed.substr(0, 2) !== seedId.substr(0, 2))) {
-    const seedGroup = findSeedGroup(state, seedId);
-    seedGroup[seedId].position = 'still';
-    dispatch(moveSeed(seedGroup))
+    let seedGroup = findSeedGroup(state, seedId);
+    seedGroup[seedId].position = still;
+    seedGroup[seedId].movesLeft = movesLeft;
+    dispatch(moveSeed(seedGroup));
+
+    dispatch(sendNotification({
+      type: 'Info',
+      title: `${movingSeed} kills ${seedId}`,
+      message: `${movingSeed} is going home`,
+    }));
+
+    seedGroup = findSeedGroup(state, movingSeed);
+    seedGroup[movingSeed].position = home;
+    seedGroup[movingSeed].movesLeft = 0;
+    dispatch(moveSeed(seedGroup));
   }
 }
 
@@ -104,15 +120,17 @@ function killSeed(state, dispatch, seedPosition, movingSeed) {
 function makeSeedMove(options) {
   const { lastMove, state, dispatch, seedPosition, seedId, reduceMoves } = options;
   const seedGroup = findSeedGroup(state, seedId);
-  if (lastMove && seedPosition !== 'home') {
-    killSeed(state, dispatch, seedPosition, seedId);
-  }
+
   seedGroup[seedId].position = seedPosition;
+
   if (reduceMoves) {
     const movesLeft = seedGroup[seedId].movesLeft;
     seedGroup[seedId].movesLeft = movesLeft - 1;
   }
   dispatch(moveSeed(seedGroup))
+  if (lastMove && seedPosition !== home) {
+    killSeed(state, dispatch, seedPosition, seedId);
+  }
 }
 
 /**
@@ -125,7 +143,7 @@ function invalidPlay(state, seedId, moves, dispatch) {
   const movesLeft = seedRemainingMoves(state, seedId);
   const movesSum = moves.reduce((a, b) => Number(a) + Number(b), 0);
 
-  if (position === 'still' && !moves.includes(6)) {
+  if (position === still && !moves.includes(6)) {
 
     dispatch(sendNotification({
       type: 'Error',
@@ -134,7 +152,7 @@ function invalidPlay(state, seedId, moves, dispatch) {
     }));
     return true;
   };
-  if (position === 'still' && movesSum - 6 > movesLeft) {
+  if (position === still && movesSum - 6 > movesLeft) {
     dispatch(sendNotification({
       type: 'Error',
       title: 'Too many Moves',
@@ -142,7 +160,7 @@ function invalidPlay(state, seedId, moves, dispatch) {
     }));
     return true;
   };
-  if (position !== 'still' && movesSum > movesLeft) {
+  if (position !== still && movesSum > movesLeft) {
     dispatch(sendNotification({
       type: 'Error',
       title: 'Too many Moves',
@@ -167,7 +185,7 @@ export function setSeedPosition(data) {
   if (invalidPlay(state, seedId, moves, dispatch)) {
     return;
   }
-  if (getSeedPosition(state, seedId) === 'still' && moves.includes(6)) {
+  if (getSeedPosition(state, seedId) === still && moves.includes(6)) {
     moves.splice(moves.indexOf(6), 1);
     setTimeout(() => {
       const lastMove = (moves.length === 1) ? true : false;

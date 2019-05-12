@@ -1,18 +1,18 @@
 import Types from '../actions/actionTypes';
 import { setColours } from '../utils/moveSeed';
-import { still, movesLeft } from '../utils/constants';
+import { still, movesLeft, home } from '../utils/constants';
 
 // movesLeft here is the minimum number of moves needed to finish after coming out of the house.
 const initialState = {
   houseOneCards: {
     'H1-C1': { position: still, movesLeft: movesLeft },
     'H1-C2': { position: still, movesLeft: movesLeft },
-    'H1-C3': { position: still, movesLeft: movesLeft },
+    'H1-C3': { position: home, movesLeft: movesLeft },
     'H1-C4': { position: still, movesLeft: movesLeft },
     'H1-Colour': 'blue'
   },
   houseTwoCards: {
-    'H2-C1': { position: still, movesLeft: 34 },
+    'H2-C1': { position: still, movesLeft: movesLeft },
     'H2-C2': { position: still, movesLeft: movesLeft },
     'H2-C3': { position: still, movesLeft: movesLeft },
     'H2-C4': { position: still, movesLeft: movesLeft },
@@ -38,7 +38,7 @@ const initialState = {
     'H3': 'yellow',
     'H4': 'green',
   },
-  playerTurn: 'P2',
+  playerTurn: 'P1',
   selectedSeed: '',
   dieCast: false, // true is a user has finished rolling die for his turn
   notification: {},

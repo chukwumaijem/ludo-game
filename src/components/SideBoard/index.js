@@ -93,7 +93,7 @@ class SideBoard extends Component {
     const options = {
       element: this.state.element,
       numberOfDice: 2,
-      callback: this.setDieRollResult
+      callback: this.setDieRollResult,
     };
     rollADie(options);
   }

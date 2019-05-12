@@ -3,11 +3,6 @@
   background-color: #ddd;
 }
 
-.house .house-left {
-  float: left;
-  margin-bottom: 0px;
-}
-
 .rails .rails-h-left {
   clear: both;
   float: left;
