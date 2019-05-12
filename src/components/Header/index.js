@@ -1,31 +1,26 @@
-import React, { Component } from 'react';
-import { Menu } from 'semantic-ui-react';
+import React from 'react';
 
-class PageHeader extends Component {
-  handleUserAuth = () => {
-    const { currenUser } = this.props;
-    if (currenUser) {
-      // this.props.logout()
-    }
-  }
-
-  render() {
-    const { currenUser } = this.props;
-    return (
-      <Menu attached="top" borderless color="brown" fluid size={'massive'}>
-        <Menu.Item href="/">DazeLudo</Menu.Item>
-        <Menu.Menu position="right">
-          <Menu.Item href="how-to-play">How to Play</Menu.Item>
-          <Menu.Item href="rooms">Public Rooms</Menu.Item>
-          {
-            currenUser ?
-              <Menu.Item name='Log Out' onClick={this.handleUserAuth} />
-              :
-              <Menu.Item name='Login' href="login" onClick={this.handleUserAuth} />
-          }
-        </Menu.Menu>
-      </Menu>
-    );
-  }
-};
+const PageHeader = () => {
+  return (
+    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <a className="navbar-brand" href="/">DazeLudo</a>
+      <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span className="navbar-toggler-icon"></span>
+      </button>
+      <div className="collapse navbar-collapse" id="navbarNav">
+        <ul className="navbar-nav float-right">
+          <li className="nav-item">
+            <a className="nav-link disabled" href="/rooms/public">Public Rooms</a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link disabled" href="how-to-play/">How to Play</a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link disabled" href="/login">Login</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  )
+}
 export default PageHeader;

@@ -1,6 +1,9 @@
 .section {
-  display: inline-block;
+  display: flex;
   text-align: center;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
 }
 
 .description {

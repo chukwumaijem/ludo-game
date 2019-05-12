@@ -7,6 +7,8 @@ export {
   clearNotification,
   sendNotification,
   changeTurn,
+  setNumberOfPlayers,
+  setDisabled,
 } from './gameData';
 
 export {

@@ -1,10 +1,11 @@
 .dieWindowContainer {
-  height: 35vh;
-  width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  bottom: 20px;
+  height: 45vh;
+  width: 100%;
   padding: 20px 0px;
 }
 .rollDieButton {
@@ -50,6 +51,9 @@
   0 1px 5px 0 rgba(0, 0, 0, 0.12), 
   0 5px 2px -2px rgba(0, 0, 0, 0.2);
 }
+.dieResultContainer {
+  height: 50%;
+}
 .dieResult:hover {
   background-color: #ddd;
 }
@@ -58,15 +62,69 @@
   box-shadow: 0 0 0 0 white;
 }
 .playMoveContainer {
-  display: flex;
+  display: table;
   flex-direction: column;
-  align-items: flex-start;
+  justify-content: space-between;
   width: 100%;
+  height: 15vh;
+  line-height: 50px;
+  text-align: center;
 }
+.playMoveContainer-row {
+  display: table-row;
+  height: 50%;
+}
+
 .playMove {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  height: 50px;
   align-items: center;
+  height: 100%;
+  line-height: 60px;
+}
+.playButton {
+  width: 30%;
+}
+.countSeed {
+  height: 30px;
+}
+.selectedSeedContainer {
+  height: 40px;
+  width: 70%;
+  line-height: 40px;
+}
+.selectedSeed {
+  text-align: center;
+  margin-left: 10px;
+  display: inline-block;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+}
+
+.yellow-playing-body {
+  background-color: #dd4;
+  color: white;
+  display: table-cell;
+  vertical-align: middle;
+}
+.red-playing-body {
+  background-color: #f00;
+  color: white;
+  display: table-cell;
+  vertical-align: middle;
+}
+.blue-playing-body {
+  background-color: #11a;
+  color: white;
+  display: table-cell;
+  vertical-align: middle;
+}
+.green-playing-body {
+  background-color: #291;
+  color: white;
+  display: table-cell;
+  vertical-align: middle;
 }

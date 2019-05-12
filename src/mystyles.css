@@ -73,6 +73,16 @@
   background-color: #7FA2F7;
 }
 
+.house-colour-grey {
+  background-color: #888;
+}
+.house-colour-grey.disabled {
+  cursor: not-allowed;
+}
+.house-colour-grey-light {
+  background-color: #ccc;
+}
+
 .railbox {
   border: 0.5px solid #aaa;
   display: inline-block;
@@ -113,4 +123,13 @@
 .seed-3 {
   bottom: 0;
   right: 0;
+}
+
+.center-all {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

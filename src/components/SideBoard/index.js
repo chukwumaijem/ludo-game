@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import rollADie from 'roll-a-die';
@@ -15,7 +15,8 @@ import {
 import { findSeedGroup } from '../../utils/moveSeed';
 import GameChat from '../GameChat';
 
-import styles from './SideBoard.module.css';
+import './index.css';
+
 const NUMBER = {
   1: 'One',
   2: 'Two',
@@ -87,8 +88,7 @@ class SideBoard extends Component {
   }
 
   rollDice = () => {
-    const { playerTurn, loggedInPlayer, dieCast } = this.props;
-    if (playerTurn !== loggedInPlayer) return;
+    const { dieCast } = this.props;
     if (dieCast) return;
     const options = {
       element: this.state.element,
@@ -138,29 +138,27 @@ class SideBoard extends Component {
     const { results } = this.state;
     const playDisabled = selectedSeed && results.filter(result => result.selected).length;
     return (
-      <div className={styles.playMove}>
-        <button disabled={!playDisabled} onClick={this.moveSeed} style={{ height: '30px' }}>
-          Play it
-      </button>
-        {selectedSeed &&
-          <span>
-            Selected Seed:
-          <span
-              style={{
-                display: 'inline-block',
-                color: 'white',
-                width: '40px',
-                height: '40px',
-                borderRadius: '50px',
-                backgroundColor: COLOUR_CODE[colour.toLowerCase()],
-                lineHeight: '40px',
-                textAlign: 'center',
-                marginLeft: '10px',
-              }}>
-              {selectedSeed.substr(4, 1)}
-            </span>
-          </span>
-        }
+      <div className="playMove">
+        <input
+          disabled={!playDisabled}
+          onClick={this.moveSeed}
+          className="btn btn-primary countSeed playButton"
+          value="Play It"
+        />
+        <div className="selectedSeedContainer">
+          {selectedSeed &&
+            <Fragment>
+              Selected Seed: &nbsp;
+              <div
+                className="selectedSeed"
+                style={{
+                  backgroundColor: COLOUR_CODE[colour.toLowerCase()],
+                }}>
+                {selectedSeed.substr(4, 1)}
+              </div>
+            </Fragment>
+          }
+        </div>
       </div>
     )
   }
@@ -169,7 +167,7 @@ class SideBoard extends Component {
     return results.map(result =>
       <div
         key={result.id}
-        className={`${styles.dieResult} ${result.selected ? styles.selectedResult : ''}`}
+        className={`dieResult ${result.selected ? 'selectedResult' : ''}`}
         onClick={() => this.toggleDieResultSelected(result.id)}
       >
         {result.value}
@@ -181,7 +179,6 @@ class SideBoard extends Component {
     const {
       sideBoardWidth,
       playerTurn,
-      loggedInPlayer,
       dieCast,
     } = this.props;
     const containerStyle = {
@@ -192,35 +189,39 @@ class SideBoard extends Component {
       height: '100%',
       display: 'flex',
       flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
+      justifyContent: 'space-between',
     };
-    const disableButton = (playerTurn !== loggedInPlayer || dieCast) ? 'disabled' : null;
+    const disableButton = (dieCast) ? 'disabled' : null;
     const houseNumber = playerTurn.substr(1, 1);
     let colour = this.props.gameData[`house${NUMBER[houseNumber]}Cards`][`H${houseNumber}-Colour`];
     colour = colour.substr(0, 1).toUpperCase() + colour.substr(1, colour.length);
     return (
       <div style={containerStyle}>
-        <hr className={styles.hRule} />
+        <hr className="hRule" />
         <GameChat />
-        <hr className={styles.hRule} />
-        <div className={styles.playMoveContainer}>
-          <p>Playing: {colour} House</p>
-          {this.renderSelectedDie(colour)}
+        <hr className="hRule" />
+        <div className="playMoveContainer">
+          <span className="playMoveContainer-row">
+            <h6 className={`${colour.toLowerCase()}-playing-body`}>Playing: {colour} House</h6>
+          </span>
+          <span className="playMoveContainer-row">
+            {this.renderSelectedDie(colour)}
+          </span>
         </div>
-        <hr className={styles.hRule} />
-        <div className={styles.dieWindowContainer}>
-          <div>
+        <hr className="hRule" />
+        <div className="dieWindowContainer">
+          <div className="dieResultContainer">
             {this.renderDieResults()}
+            <div id="roll-die"></div>
           </div>
-          <div id="roll-die"></div>
           <div
-            className={`${styles.rollDieButton} ${styles[disableButton]}`}
+            className={`rollDieButton ${disableButton ? 'disabled' : ''}`}
             onClick={this.rollDice}>
             Roll Dice
           </div>
         </div>
-        <hr className={styles.hRule} />
+        <hr className="hRule" />
       </div>
     )
   }
@@ -230,7 +231,6 @@ function mapStateToProps({ gameSettings, gameData }) {
   return {
     sideBoardWidth: gameSettings.sideBoardWidth,
     playerTurn: gameData.playerTurn,
-    loggedInPlayer: gameData.loggedInPlayer,
     selectedSeed: gameData.selectedSeed,
     dieCast: gameData.dieCast,
     gameData,

@@ -67,3 +67,30 @@ function changeTurnAction() {
 export function changeTurn() {
   return changeTurnAction();
 }
+
+function numberOfPlayers(data) {
+  return createAction(Types.NUMBER_OF_PLAYERS)(data);
+}
+function numberOfPlayersUpdated() {
+  return createAction(Types.NUMBER_OF_PLAYERS_UPDATED)();
+}
+export function setNumberOfPlayers(data) {
+  return async (dispatch) => {
+    await dispatch(numberOfPlayers(data));
+    return dispatch(numberOfPlayersUpdated());
+  }
+}
+
+
+function setDisabledHouse(data) {
+  return createAction(Types.SET_DISABLED_HOUSES)(data);
+}
+function setDisabledHousesComplete() {
+  return createAction(Types.SET_DISABLED_HOUSES_COMPLETE)();
+}
+export function setDisabled(data) {
+  return async dispatch => {
+    await dispatch(setDisabledHouse(data));
+    return dispatch(setDisabledHousesComplete());
+  }
+}

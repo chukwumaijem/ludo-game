@@ -32,14 +32,59 @@ const initialState = {
     'H4-C4': { position: still, movesLeft: movesLeft },
     'H4-Colour': 'green'
   },
-  playerTurn: 'P2', //`P${parseInt((Math.random() * 4), 10) + 1}`,
-  loggedInPlayer: 'P2', //this is used to decide which house belongs to the current player
+  houseColors: {
+    'H1': 'blue',
+    'H2': 'red',
+    'H3': 'yellow',
+    'H4': 'green',
+  },
+  playerTurn: 'P2',
   selectedSeed: '',
   dieCast: false, // true is a user has finished rolling die for his turn
-  notification: {}
+  notification: {},
+  numberOfPlayers: 4,
+  numberOfPlayersUpdated: false,
+  setDisabledHousesComplete: false,
+  playingHouses: ['H1', 'H2', 'H3', 'H4'],
+  disabledHouses: {
+    red: false,
+    green: false,
+    blue: false,
+    yellow: false,
+  }
 };
 
+function nextTurn(state) {
+  const { playerTurn, playingHouses } = state;
+  const playingIndex = playingHouses.indexOf(playerTurn.replace('P', 'H'));
+  if ((playingIndex + 1) >= playingHouses.length) {
+    return playingHouses[0].replace('H', 'P');
+  }
+  return playingHouses[playingIndex + 1].replace('H', 'P');
+}
 
+function setHouseOrder(house) {
+  const houses = house.sort(); // should be in order ['H1', 'H2', 'H4', 'H3'];
+  if (houses.includes('H3') && houses.includes('H4')) {
+    const h3Index = houses.indexOf('H3');
+    const h4Index = houses.indexOf('H4');
+    houses[h3Index] = 'H4';
+    houses[h4Index] = 'H3';
+  }
+  return houses;
+}
+function setInitialPlayerTurn(state) {
+  const { disabledHouses, houseColors } = state;
+  const avail = Object.keys(disabledHouses).filter(key => !disabledHouses[key]);
+  const availPlayers = avail[Math.floor(Math.random() * avail.length)];
+  const playingHouses = Object.keys(houseColors);
+  return {
+    playerToStart: playingHouses
+      .find(key => houseColors[key] === availPlayers)
+      .replace('H', 'P'),
+    playingHouses: setHouseOrder(playingHouses),
+  };
+}
 
 export default function gameData(state = initialState, action) {
   switch (action.type) {
@@ -77,15 +122,12 @@ export default function gameData(state = initialState, action) {
         { selectedSeed: seedId }
       );
     case Types.CHANGE_TURN:
-      const turn = Number(state.playerTurn.substr(1, 1));
-      const nextTurn = turn === 2 ? 'P4' : turn === 3 ? 'P1' : turn === 4 ? 'P3' : `P${turn + 1}`
       return Object.assign({},
         state,
         {
-          playerTurn: nextTurn, //order: 1, 2, 4, 3 and repeat
+          playerTurn: nextTurn(state), //order: H1, H2, H4, H3 and repeat
           selectedSeed: '',
           dieCast: false,
-          loggedInPlayer: nextTurn, // for dev only. key needs to be removed for prod.
         }
       );
     case Types.REMOVE_NOTIFICATION:
@@ -98,6 +140,31 @@ export default function gameData(state = initialState, action) {
         state,
         { notification: action.payload }, // use id here so notifications can be cleared one after the other.
       )
+    case Types.NUMBER_OF_PLAYERS:
+      return Object.assign({},
+        state,
+        { numberOfPlayers: Number(action.payload) },
+      );
+    case Types.NUMBER_OF_PLAYERS_UPDATED:
+      return Object.assign({},
+        state,
+        { numberOfPlayersUpdated: true },
+      );
+    case Types.SET_DISABLED_HOUSES:
+      return Object.assign({},
+        state,
+        { disabledHouses: action.payload },
+      );
+    case Types.SET_DISABLED_HOUSES_COMPLETE:
+      const { playerToStart, playingHouses } = setInitialPlayerTurn(state);
+      return Object.assign({},
+        state,
+        {
+          setDisabledHousesComplete: true,
+          playerTurn: playerToStart,
+          playingHouses,
+        },
+      );
     default:
       return state;
   }

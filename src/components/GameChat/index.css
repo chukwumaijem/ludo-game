@@ -1,0 +1,6 @@
+.chatWindowContainer {
+  height: 50vh;
+  width: 100%;
+  background-color: #ddd;
+  text-align: center;
+}

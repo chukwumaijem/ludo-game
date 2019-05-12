@@ -1,9 +1,9 @@
 import React from 'react';
-import { Segment } from 'semantic-ui-react';
+import './footer.css';
 
 const Footer = () =>
-  <Segment attached="bottom" size='small' clearing textAlign='center'>
+  <div className="footer">
     Copyright &copy; Synedrio 2018
-  </Segment>;
+  </div>;
 
 export default Footer;

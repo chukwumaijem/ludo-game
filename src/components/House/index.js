@@ -43,11 +43,11 @@ class HouseFrame extends React.Component {
     return cards;
   }
   render() {
-    const houseHeight = this.props.houseHeight;
-    const className = `house house-${this.props.position}`;
-    const label = this.props.houseNumber;
+    const { houseHeight, position, houseNumber, disabled } = this.props;
+    const className = `house house-${position}`;
+    const label = houseNumber;
     const houseCards = this.props.gameData[`house${NUMBER[label]}Cards`];
-    const houseColour = houseCards[`H${label}-Colour`];
+    const houseColour = disabled ? 'grey' : houseCards[`H${label}-Colour`];
     const colorClass = `house-colour-${houseColour}-light`;
 
     return (
