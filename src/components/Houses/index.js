@@ -8,42 +8,33 @@ import { HRailFrame, VRailFrame } from '../Rails';
 import { getLudoSeeds } from '../../utils/moveSeed';
 
 class Houses extends Component {
-  state = {
-    disabled: {
-      red: false,
-      green: false,
-      blue: false,
-      yellow: false,
-    }
-  }
-
   componentDidMount() {
-    const playerTurn = this.props.gameData.playerTurn;
-    this.props.disableInactiveHouseSeed(playerTurn);
+    // const playerTurn = this.props.gameData.playerTurn;
+    // this.props.disableInactiveHouseSeed(playerTurn);
     this.disableEmptyHouses();
   }
 
   disableEmptyHouses = () => {
+    const disabled = { red: false, green: false, blue: false, yellow: false };
     const { numberOfPlayers } = this.props;
-    const disabled = { ...this.state.disabled };
     const colors = ['red', 'green', 'blue', 'yellow'];
     if (numberOfPlayers === 3) {
       const color = colors[Math.floor(Math.random() * 4)];
       disabled[color] = true;
-      return this.props.setDisabled({ disabled });
+      return this.props.setDisabled({ ...disabled });
     } else if (numberOfPlayers === 2) {
       const overide = [
         { green: true, blue: true },
         { red: true, yellow: true }
       ][Math.floor(Math.random() * 2)];
-      return this.props.setDisabled({ disabled: { ...disabled, ...overide } });
+      return this.props.setDisabled({ ...disabled, ...overide });
     }
 
-    this.props.setDisabled(this.state.disabled);
+    this.props.setDisabled(disabled);
   }
 
   render() {
-    const { setDisabledHousesComplete, gameBoardHeight } = this.props;
+    const { setDisabledHousesComplete, gameBoardHeight, disabledHouses } = this.props;
     const houseHeight = gameBoardHeight * 0.4;
     const VRailHeight = gameBoardHeight * 0.4;
     const HRailHeight = gameBoardHeight * 0.2;
@@ -53,17 +44,19 @@ class Houses extends Component {
     const houseFourColour = this.props.houseFourCards["H4-Colour"];
     const seedData = getLudoSeeds(this.props.gameData);
     if (!setDisabledHousesComplete) return (<h5>Loading...</h5>);
+
     return (
       <div className="" style={{ float: 'left' }}>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <HouseFrame houseHeight={houseHeight} houseNumber={1} />
+          <HouseFrame houseHeight={houseHeight} houseNumber={1} disabled={disabledHouses['blue']} />
           <VRailFrame
             VRailHeight={VRailHeight}
             boxColour={houseTwoColour}
             boxPosition={'VT'}
             seedData={seedData}
+            disabled={disabledHouses['red']} 
           />
-          <HouseFrame houseHeight={houseHeight} houseNumber={2} />
+          <HouseFrame houseHeight={houseHeight} houseNumber={2} disabled={disabledHouses['red']} />
         </div>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <HRailFrame
@@ -72,6 +65,7 @@ class Houses extends Component {
             boxColour={houseOneColour}
             boxPosition={'HL'}
             seedData={seedData}
+            disabled={disabledHouses['blue']} 
           />
           <div className="home" style={{ width: HRailHeight, height: HRailHeight }}>
           </div>
@@ -81,17 +75,19 @@ class Houses extends Component {
             boxColour={houseFourColour}
             boxPosition={'HR'}
             seedData={seedData}
+            disabled={disabledHouses['green']} 
           />
         </div>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <HouseFrame houseHeight={houseHeight} houseNumber={3} />
+          <HouseFrame houseHeight={houseHeight} houseNumber={3} disabled={disabledHouses['yellow']} />
           <VRailFrame
             VRailHeight={VRailHeight}
             boxColour={houseThreeColour}
             boxPosition={'VB'}
             seedData={seedData}
+            disabled={disabledHouses['yellow']} 
           />
-          <HouseFrame houseHeight={houseHeight} position={"right"} houseNumber={4} />
+          <HouseFrame houseHeight={houseHeight} position={"right"} houseNumber={4} disabled={disabledHouses['green']} />
         </div>
       </div>
     );
@@ -108,6 +104,7 @@ function mapStateToProps({ gameData, gameSettings }) {
     gameBoardHeight: gameSettings.gameBoardHeight,
     numberOfPlayers: gameData.numberOfPlayers,
     setDisabledHousesComplete: gameData.setDisabledHousesComplete,
+    disabledHouses: gameData.disabledHouses,
   }
 }
 function mapDispatchToProps(dispatch) {

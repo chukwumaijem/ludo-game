@@ -60,6 +60,7 @@ function nextTurn(state) {
   if ((playingIndex + 1) >= playingHouses.length) {
     return playingHouses[0].replace('H', 'P');
   }
+
   return playingHouses[playingIndex + 1].replace('H', 'P');
 }
 
@@ -77,7 +78,13 @@ function setInitialPlayerTurn(state) {
   const { disabledHouses, houseColors } = state;
   const avail = Object.keys(disabledHouses).filter(key => !disabledHouses[key]);
   const availPlayers = avail[Math.floor(Math.random() * avail.length)];
-  const playingHouses = Object.keys(houseColors);
+  const availHouses = {...houseColors};
+  for (let item in availHouses) {
+    if (!avail.includes(availHouses[item]))
+      delete availHouses[item];
+   }
+  const playingHouses = Object.keys(availHouses);
+
   return {
     playerToStart: playingHouses
       .find(key => houseColors[key] === availPlayers)

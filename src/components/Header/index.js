@@ -10,13 +10,13 @@ const PageHeader = () => {
       <div className="collapse navbar-collapse" id="navbarNav">
         <ul className="navbar-nav float-right">
           <li className="nav-item">
-            <a className="nav-link disabled" href="/rooms/public">Public Rooms</a>
+            <a className="nav-link" href="/rooms/public">Public Rooms</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link disabled" href="how-to-play/">How to Play</a>
+            <a className="nav-link" href="how-to-play/">How to Play</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link disabled" href="/login">Login</a>
+            <a className="nav-link" href="/login">Login</a>
           </li>
         </ul>
       </div>

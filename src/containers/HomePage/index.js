@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import Toastr from 'toastr';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
@@ -31,38 +31,40 @@ class HomePage extends Component {
     if (numberOfPlayersUpdated) return (<Redirect to="/play" />);
 
     return (
-      <div>
+      <Fragment>
         <div className="jumbotron text-center">Welcome to DazeLudo</div>
-        <div className="row">
-          <div className="col-md-6 section">
-            Simple Game Description
+        <div className="container">
+          <div className="row">
+            <div className="col-md-6 section">
+              Simple Game Description
           </div>
-          <div className="col-md-6 section">
-            <form onSubmit={this.startGame}>
-              <div className="form-group">
-                <label>Number of Players</label>
-                <input
-                  className="form-control"
-                  name="numberOfPlayers"
-                  value={numberOfPlayers}
-                  onChange={this.handleChange}
-                  type="number"
-                  max="4"
-                  min="2"
-                />
-              </div>
-              <div className="form-group">
-                <input className="btn btn-primary" value="Create Game" type="submit" />
-              </div>
-            </form>
+            <div className="col-md-6 section">
+              <form onSubmit={this.startGame}>
+                <div className="form-group">
+                  <label>Number of Players</label>
+                  <input
+                    className="form-control"
+                    name="numberOfPlayers"
+                    value={numberOfPlayers}
+                    onChange={this.handleChange}
+                    type="number"
+                    max="4"
+                    min="2"
+                  />
+                </div>
+                <div className="form-group">
+                  <input className="btn btn-primary" value="Create Game" type="submit" />
+                </div>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
+      </Fragment>
     );
   }
 }
 
-function mapStateToprops({ gameData: { numberOfPlayersUpdated} }) {
+function mapStateToprops({ gameData: { numberOfPlayersUpdated } }) {
   return {
     numberOfPlayersUpdated,
   }

@@ -3,7 +3,7 @@ import './footer.css';
 
 const Footer = () =>
   <div className="footer">
-    Copyright &copy; Synedrio 2018
+    Copyright &copy; Chukwumaijem 2017 - {new Date().getFullYear()}
   </div>;
 
 export default Footer;
