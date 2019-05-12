@@ -13,7 +13,7 @@ const PageHeader = () => {
             <a className="nav-link" href="/rooms/public">Public Rooms</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="how-to-play/">How to Play</a>
+            <a className="nav-link" href="/how-to-play">How to Play</a>
           </li>
           <li className="nav-item">
             <a className="nav-link" href="/login">Login</a>

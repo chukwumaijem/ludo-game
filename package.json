@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node_modules/.bin/electron main.js",
     "work": "npm run watch & npm start",
-    "web": "npm run watch & pushstate-server build",
+    "web": "npm run build:client:production && pushstate-server build",
     "watch": "nodemon --watch ./src --watch main.js --exec react-scripts build",
     "build:client:production": "react-scripts build",
     "preview": "npm run build:client:production && npm start",
