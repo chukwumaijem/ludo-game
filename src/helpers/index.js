@@ -1,0 +1,3 @@
+export {
+ disableEmptyHouses,
+} from './disableEmptyHouses';

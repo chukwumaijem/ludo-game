@@ -3,3 +3,4 @@ build
 .env
 .DS_Store
 yarn-error.log
+package-lock.json

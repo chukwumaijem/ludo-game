@@ -125,3 +125,8 @@
   display: table-cell;
   vertical-align: middle;
 }
+.reset-buttons {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}

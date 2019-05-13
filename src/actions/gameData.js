@@ -105,3 +105,11 @@ function resultToGlobalState(data) {
 export function setResultToGlobalState(data) {
   return resultToGlobalState(data)
 }
+
+function resetGameData(data) {
+  return createAction(Types.RESET_GAME_DATA)(data);
+}
+
+export function gameDataReset(data) {
+  return resetGameData(data)
+}

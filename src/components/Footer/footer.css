@@ -1,8 +1,12 @@
 .footer {
-  width: 100%;
-  position: fixed;
-  bottom: 0px;
-  padding: 5px 0px;
+  background-color: #f5f5f5;
   text-align: center;
-  background-color: #eee;
+  width: 100%;
+  bottom: 0;
+  position: fixed;
+  height: 50px;
+}
+.footer > .container {
+  padding-right: 15px;
+  padding-left: 15px;
 }

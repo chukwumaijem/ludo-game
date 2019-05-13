@@ -6,31 +6,14 @@ import { disableInactiveHouseSeed, setDisabled } from '../../actions';
 import HouseFrame from '../House';
 import { HRailFrame, VRailFrame } from '../Rails';
 import { getLudoSeeds } from '../../utils/moveSeed';
+import { disableEmptyHouses } from '../..//helpers';
 
 class Houses extends Component {
   componentDidMount() {
     // const playerTurn = this.props.gameData.playerTurn;
     // this.props.disableInactiveHouseSeed(playerTurn);
-    this.disableEmptyHouses();
-  }
-
-  disableEmptyHouses = () => {
-    const disabled = { red: false, green: false, blue: false, yellow: false };
     const { numberOfPlayers } = this.props;
-    const colors = ['red', 'green', 'blue', 'yellow'];
-    if (numberOfPlayers === 3) {
-      const color = colors[Math.floor(Math.random() * 4)];
-      disabled[color] = true;
-      return this.props.setDisabled({ ...disabled });
-    } else if (numberOfPlayers === 2) {
-      const overide = [
-        { green: true, blue: true },
-        { red: true, yellow: true }
-      ][Math.floor(Math.random() * 2)];
-      return this.props.setDisabled({ ...disabled, ...overide });
-    }
-
-    this.props.setDisabled(disabled);
+    disableEmptyHouses(this.props.setDisabled, numberOfPlayers);
   }
 
   render() {
@@ -54,7 +37,7 @@ class Houses extends Component {
             boxColour={houseTwoColour}
             boxPosition={'VT'}
             seedData={seedData}
-            disabled={disabledHouses['red']} 
+            disabled={disabledHouses['red']}
           />
           <HouseFrame houseHeight={houseHeight} houseNumber={2} disabled={disabledHouses['red']} />
         </div>
@@ -65,7 +48,7 @@ class Houses extends Component {
             boxColour={houseOneColour}
             boxPosition={'HL'}
             seedData={seedData}
-            disabled={disabledHouses['blue']} 
+            disabled={disabledHouses['blue']}
           />
           <div className="home" style={{ width: HRailHeight, height: HRailHeight }}>
           </div>
@@ -75,7 +58,7 @@ class Houses extends Component {
             boxColour={houseFourColour}
             boxPosition={'HR'}
             seedData={seedData}
-            disabled={disabledHouses['green']} 
+            disabled={disabledHouses['green']}
           />
         </div>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -85,7 +68,7 @@ class Houses extends Component {
             boxColour={houseThreeColour}
             boxPosition={'VB'}
             seedData={seedData}
-            disabled={disabledHouses['yellow']} 
+            disabled={disabledHouses['yellow']}
           />
           <HouseFrame houseHeight={houseHeight} position={"right"} houseNumber={4} disabled={disabledHouses['green']} />
         </div>

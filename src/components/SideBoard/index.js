@@ -11,11 +11,13 @@ import {
   dieCastComplete,
   changeTurn,
   clearNotification,
-  setResultToGlobalState
+  setResultToGlobalState,
+  setDisabled,
+  gameDataReset,
 } from '../../actions';
 import { findSeedGroup } from '../../utils/moveSeed';
 import GameChat from '../GameChat';
-
+import { disableEmptyHouses } from '../../helpers';
 import './index.css';
 
 const NUMBER = {
@@ -189,6 +191,21 @@ class SideBoard extends Component {
     )
   }
 
+  resetGame = () => {
+    if(window.confirm('Are you sure you want to restart the game?')) {
+      this.props.gameDataReset();
+      const { numberOfPlayers } = this.props;
+      disableEmptyHouses(this.props.setDisabled, numberOfPlayers);
+    }
+  }
+
+
+  newGame = () => {
+    if(window.confirm('Are you sure you want to create new game?')) {
+      return window.location.href = '/';
+    }
+  }
+
   render() {
     const {
       sideBoardWidth,
@@ -214,6 +231,11 @@ class SideBoard extends Component {
       <div style={containerStyle}>
         <hr className="hRule" />
         <GameChat />
+        <hr className="hRule" />
+        <div className="reset-buttons">
+          <button type="button" className="btn btn-warning" onClick={this.newGame}>New Gane</button>
+          <button type="button" className="btn btn-warning" onClick={this.resetGame}>Restart Gane</button>
+        </div>
         <hr className="hRule" />
         <div className="playMoveContainer">
           <span className="playMoveContainer-row">
@@ -249,6 +271,7 @@ function mapStateToProps({ gameSettings, gameData }) {
     dieCast: gameData.dieCast,
     gameData,
     dieResult: gameData.dieResult,
+    numberOfPlayers: gameData.numberOfPlayers,
   };
 }
 
@@ -259,6 +282,8 @@ function mapDispatchToProps(dispatch) {
     changeTurn,
     clearNotification,
     setResultToGlobalState,
+    setDisabled,
+    gameDataReset,
   }, dispatch);
 }
 

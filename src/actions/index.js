@@ -11,6 +11,7 @@ export {
   setDisabled,
   removePlayerFromList,
   setResultToGlobalState,
+  gameDataReset,
 } from './gameData';
 
 export {
