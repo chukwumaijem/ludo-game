@@ -1,47 +1,64 @@
+import cloneDeep from 'lodash.clonedeep';
 import Types from '../actions/actionTypes';
 import { setColours } from '../utils/moveSeed';
-import { still, movesLeft } from '../utils/constants';
+import { initialState } from '../utils/constants';
 
 // movesLeft here is the minimum number of moves needed to finish after coming out of the house.
-const initialState = {
-  houseOneCards: {
-    'H1-C1': { position: still, movesLeft: movesLeft },
-    'H1-C2': { position: still, movesLeft: movesLeft },
-    'H1-C3': { position: still, movesLeft: movesLeft },
-    'H1-C4': { position: still, movesLeft: movesLeft },
-    'H1-Colour': 'blue'
-  },
-  houseTwoCards: {
-    'H2-C1': { position: still, movesLeft: 34 },
-    'H2-C2': { position: still, movesLeft: movesLeft },
-    'H2-C3': { position: still, movesLeft: movesLeft },
-    'H2-C4': { position: still, movesLeft: movesLeft },
-    'H2-Colour': 'red'
-  },
-  houseThreeCards: {
-    'H3-C1': { position: still, movesLeft: movesLeft },
-    'H3-C2': { position: still, movesLeft: movesLeft },
-    'H3-C3': { position: still, movesLeft: movesLeft },
-    'H3-C4': { position: still, movesLeft: movesLeft },
-    'H3-Colour': 'yellow'
-  },
-  houseFourCards: {
-    'H4-C1': { position: still, movesLeft: movesLeft },
-    'H4-C2': { position: still, movesLeft: movesLeft },
-    'H4-C3': { position: still, movesLeft: movesLeft },
-    'H4-C4': { position: still, movesLeft: movesLeft },
-    'H4-Colour': 'green'
-  },
-  playerTurn: 'P2', //`P${parseInt((Math.random() * 4), 10) + 1}`,
-  loggedInPlayer: 'P2', //this is used to decide which house belongs to the current player
-  selectedSeed: '',
-  dieCast: false, // true is a user has finished rolling die for his turn
-  notification: {}
-};
 
+function nextTurn(state) {
+  const { playerTurn, playingHouses } = state;
+  const playingIndex = playingHouses.indexOf(playerTurn.replace('P', 'H'));
+  if ((playingIndex + 1) >= playingHouses.length) {
+    return playingHouses[0].replace('H', 'P');
+  }
 
+  return playingHouses[playingIndex + 1].replace('H', 'P');
+}
+function setHouseOrder(house) {
+  const houses = house.sort(); // should be in order ['H1', 'H2', 'H4', 'H3'];
+  if (houses.includes('H3') && houses.includes('H4')) {
+    const h3Index = houses.indexOf('H3');
+    const h4Index = houses.indexOf('H4');
+    houses[h3Index] = 'H4';
+    houses[h4Index] = 'H3';
+  }
+  return houses;
+}
 
-export default function gameData(state = initialState, action) {
+function setInitialPlayerTurn(state) {
+  const { disabledHouses, houseColors } = state;
+  const avail = Object.keys(disabledHouses).filter(key => !disabledHouses[key]);
+  const availPlayers = avail[Math.floor(Math.random() * avail.length)];
+  const availHouses = { ...houseColors };
+  for (let item in availHouses) {
+    if (!avail.includes(availHouses[item]))
+      delete availHouses[item];
+  }
+  const playingHouses = Object.keys(availHouses);
+
+  return {
+    playerToStart: playingHouses
+      .find(key => houseColors[key] === availPlayers)
+      .replace('H', 'P'),
+    playingHouses: setHouseOrder(playingHouses),
+  };
+}
+
+function removePlayerFromlist(state, player) {
+  const { playingHouses } = state;
+  const indexOfHouse = playingHouses.findIndex(function (element) {
+    return element.includes(player);
+  });
+  const houseCopy = [...playingHouses]
+  houseCopy.splice(indexOfHouse, 1);
+  return houseCopy;
+}
+
+function makeStateCopy() {
+  return cloneDeep(initialState);
+}
+
+export default function gameData(state = makeStateCopy(), action) {
   switch (action.type) {
     case Types.SET_COLOURS:
       return setColours(state, action);
@@ -77,15 +94,12 @@ export default function gameData(state = initialState, action) {
         { selectedSeed: seedId }
       );
     case Types.CHANGE_TURN:
-      const turn = Number(state.playerTurn.substr(1, 1));
-      const nextTurn = turn === 2 ? 'P4' : turn === 3 ? 'P1' : turn === 4 ? 'P3' : `P${turn + 1}`
       return Object.assign({},
         state,
         {
-          playerTurn: nextTurn, //order: 1, 2, 4, 3 and repeat
+          playerTurn: nextTurn(state), //order: H1, H2, H4, H3 and repeat
           selectedSeed: '',
           dieCast: false,
-          loggedInPlayer: nextTurn, // for dev only. key needs to be removed for prod.
         }
       );
     case Types.REMOVE_NOTIFICATION:
@@ -98,6 +112,49 @@ export default function gameData(state = initialState, action) {
         state,
         { notification: action.payload }, // use id here so notifications can be cleared one after the other.
       )
+    case Types.NUMBER_OF_PLAYERS:
+      return Object.assign({},
+        state,
+        { numberOfPlayers: Number(action.payload) },
+      );
+    case Types.NUMBER_OF_PLAYERS_UPDATED:
+      return Object.assign({},
+        state,
+        { numberOfPlayersUpdated: true },
+      );
+    case Types.SET_DISABLED_HOUSES:
+      return Object.assign({},
+        state,
+        { disabledHouses: action.payload },
+      );
+    case Types.SET_DISABLED_HOUSES_COMPLETE:
+      const { playerToStart, playingHouses } = setInitialPlayerTurn(state);
+      return Object.assign({},
+        state,
+        {
+          setDisabledHousesComplete: true,
+          playerTurn: playerToStart,
+          playingHouses,
+        },
+      );
+    case Types.REMOVE_PLAYER_FROM_LIST:
+      return Object.assign({},
+        state,
+        { playingHouses: removePlayerFromlist(state, action.payload) },
+      );
+    case Types.SET_RESULT_TO_GLOBAL:
+      return Object.assign({},
+        state,
+        { dieResult: action.payload },
+      );
+    case Types.RESET_GAME_DATA:
+      const { numberOfPlayers } = state;
+      return Object.assign({},
+        makeStateCopy(),
+        {
+          numberOfPlayers,
+          numberOfPlayersUpdated: true,
+        });
     default:
       return state;
   }

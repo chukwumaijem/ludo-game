@@ -7,6 +7,11 @@ export {
   clearNotification,
   sendNotification,
   changeTurn,
+  setNumberOfPlayers,
+  setDisabled,
+  removePlayerFromList,
+  setResultToGlobalState,
+  gameDataReset,
 } from './gameData';
 
 export {

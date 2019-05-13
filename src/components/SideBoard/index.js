@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import rollADie from 'roll-a-die';
@@ -10,12 +10,16 @@ import {
   moveSeedToPosition,
   dieCastComplete,
   changeTurn,
-  clearNotification
+  clearNotification,
+  setResultToGlobalState,
+  setDisabled,
+  gameDataReset,
 } from '../../actions';
 import { findSeedGroup } from '../../utils/moveSeed';
 import GameChat from '../GameChat';
+import { disableEmptyHouses } from '../../helpers';
+import './index.css';
 
-import styles from './SideBoard.module.css';
 const NUMBER = {
   1: 'One',
   2: 'Two',
@@ -33,6 +37,17 @@ class SideBoard extends Component {
   state = {
     element: null,
     results: [],
+    repeatCast: false,
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (props.dieResult !== state.result) {
+      return {
+        ...state,
+        results: props.dieResult,
+      };
+    }
+    return null;
   }
 
   componentDidMount() {
@@ -42,12 +57,11 @@ class SideBoard extends Component {
     });
   }
 
-  canPlayPlay = () => {
+  checkIfPlayerHasValidMoves = (results) => {
     const { playerTurn } = this.props;
-    const { results } = this.state;
     const groups = findSeedGroup(this.props.gameData, `H${playerTurn.substr(1, 1)}`);
     const seedGroup = sortBy(groups, (o) => o.movesLeft).reverse();
-    // srting and reversing here to first test and remove seeds that are still
+    // sorting and reversing here to first test and remove seeds that are still
     let canPlay = 0;
     const resultCollection = results.map(result => result.value);
     const resultsSum = resultCollection.reduce((a, b) => a + b, 0);
@@ -69,31 +83,32 @@ class SideBoard extends Component {
   }
 
   setDieRollResult = (results) => {
+    if (results[0] === 6 && results[1] === 6) {
+      this.setState({ repeatCast: true });
+    } else {
+      this.setState({ repeatCast: false });
+    }
+
     const preResults = this.state.results;
     const resultObjects = results.map(result => {
       return { id: shortId.generate(), value: result, selected: false };
     });
+    const resultsConcat = [...preResults, ...resultObjects];
+    this.props.setResultToGlobalState(resultsConcat);
 
-    this.setState({
-      results: [
-        ...preResults, ...resultObjects
-      ]
-    }, () => {
-      if (results[0] !== 6 || results[1] !== 6) {
-        this.props.dieCastComplete();
-        this.canPlayPlay()
-      }
-    });
+    if (results[0] !== 6 || results[1] !== 6) {
+      this.props.dieCastComplete();
+      this.checkIfPlayerHasValidMoves(resultsConcat)
+    }
   }
 
   rollDice = () => {
-    const { playerTurn, loggedInPlayer, dieCast } = this.props;
-    if (playerTurn !== loggedInPlayer) return;
+    const { dieCast } = this.props;
     if (dieCast) return;
     const options = {
       element: this.state.element,
       numberOfDice: 2,
-      callback: this.setDieRollResult
+      callback: this.setDieRollResult,
     };
     rollADie(options);
   }
@@ -110,11 +125,11 @@ class SideBoard extends Component {
 
   endTurn = () => {
     this.props.changeTurn();
-    this.setState({ results: [] })
+    this.props.setResultToGlobalState([]);
   }
 
   moveSeed = () => {
-    const results = this.state.results;
+    const { results, repeatCast } = this.state;
     const selectedSeed = this.props.selectedSeed;
     const indexes = [];
     const selectedMoves = results.filter((result, index) => {
@@ -126,8 +141,9 @@ class SideBoard extends Component {
 
     this.props.moveSeedToPosition(selectedSeed, selectedMoves, () => {
       const resultsLeft = results.filter(result => indexes.indexOf(result.id) < 0);
+      this.props.setResultToGlobalState(resultsLeft);
       this.setState({ results: resultsLeft });
-      if (!resultsLeft.length) {
+      if (!resultsLeft.length && !repeatCast) {
         this.endTurn()
       }
     });
@@ -138,29 +154,27 @@ class SideBoard extends Component {
     const { results } = this.state;
     const playDisabled = selectedSeed && results.filter(result => result.selected).length;
     return (
-      <div className={styles.playMove}>
-        <button disabled={!playDisabled} onClick={this.moveSeed} style={{ height: '30px' }}>
-          Play it
-      </button>
-        {selectedSeed &&
-          <span>
-            Selected Seed:
-          <span
-              style={{
-                display: 'inline-block',
-                color: 'white',
-                width: '40px',
-                height: '40px',
-                borderRadius: '50px',
-                backgroundColor: COLOUR_CODE[colour.toLowerCase()],
-                lineHeight: '40px',
-                textAlign: 'center',
-                marginLeft: '10px',
-              }}>
-              {selectedSeed.substr(4, 1)}
-            </span>
-          </span>
-        }
+      <div className="playMove">
+        <input
+          disabled={!playDisabled}
+          onClick={this.moveSeed}
+          className={`btn playButton ${colour.toLowerCase()}-playing-body`}
+          value="Play It"
+        />
+        <div className="selectedSeedContainer">
+          {selectedSeed &&
+            <Fragment>
+              Selected Seed: &nbsp;
+              <div
+                className="selectedSeed"
+                style={{
+                  backgroundColor: COLOUR_CODE[colour.toLowerCase()],
+                }}>
+                {selectedSeed.substr(4, 1)}
+              </div>
+            </Fragment>
+          }
+        </div>
       </div>
     )
   }
@@ -169,7 +183,7 @@ class SideBoard extends Component {
     return results.map(result =>
       <div
         key={result.id}
-        className={`${styles.dieResult} ${result.selected ? styles.selectedResult : ''}`}
+        className={`dieResult ${result.selected ? 'selectedResult' : ''}`}
         onClick={() => this.toggleDieResultSelected(result.id)}
       >
         {result.value}
@@ -177,11 +191,25 @@ class SideBoard extends Component {
     )
   }
 
+  resetGame = () => {
+    if(window.confirm('Are you sure you want to restart the game?')) {
+      this.props.gameDataReset();
+      const { numberOfPlayers } = this.props;
+      disableEmptyHouses(this.props.setDisabled, numberOfPlayers);
+    }
+  }
+
+
+  newGame = () => {
+    if(window.confirm('Are you sure you want to create new game?')) {
+      return window.location.href = '/';
+    }
+  }
+
   render() {
     const {
       sideBoardWidth,
       playerTurn,
-      loggedInPlayer,
       dieCast,
     } = this.props;
     const containerStyle = {
@@ -192,35 +220,44 @@ class SideBoard extends Component {
       height: '100%',
       display: 'flex',
       flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
+      justifyContent: 'space-between',
     };
-    const disableButton = (playerTurn !== loggedInPlayer || dieCast) ? 'disabled' : null;
+    const disableButton = (dieCast) ? 'disabled' : null;
     const houseNumber = playerTurn.substr(1, 1);
     let colour = this.props.gameData[`house${NUMBER[houseNumber]}Cards`][`H${houseNumber}-Colour`];
     colour = colour.substr(0, 1).toUpperCase() + colour.substr(1, colour.length);
     return (
       <div style={containerStyle}>
-        <hr className={styles.hRule} />
+        <hr className="hRule" />
         <GameChat />
-        <hr className={styles.hRule} />
-        <div className={styles.playMoveContainer}>
-          <p>Playing: {colour} House</p>
-          {this.renderSelectedDie(colour)}
+        <hr className="hRule" />
+        <div className="reset-buttons">
+          <button type="button" className="btn btn-warning" onClick={this.newGame}>New Gane</button>
+          <button type="button" className="btn btn-warning" onClick={this.resetGame}>Restart Gane</button>
         </div>
-        <hr className={styles.hRule} />
-        <div className={styles.dieWindowContainer}>
-          <div>
+        <hr className="hRule" />
+        <div className="playMoveContainer">
+          <span className="playMoveContainer-row">
+            <h6 className={`${colour.toLowerCase()}-playing-body`}>Playing: {colour} House</h6>
+          </span>
+          <span className="playMoveContainer-row">
+            {this.renderSelectedDie(colour)}
+          </span>
+        </div>
+        <hr className="hRule" />
+        <div className="dieWindowContainer">
+          <div className="dieResultContainer">
             {this.renderDieResults()}
+            <div id="roll-die"></div>
           </div>
-          <div id="roll-die"></div>
           <div
-            className={`${styles.rollDieButton} ${styles[disableButton]}`}
+            className={`${colour.toLowerCase()}-playing-body rollDieButton ${disableButton ? 'disabled' : ''}`}
             onClick={this.rollDice}>
             Roll Dice
           </div>
         </div>
-        <hr className={styles.hRule} />
+        <hr className="hRule" />
       </div>
     )
   }
@@ -230,10 +267,11 @@ function mapStateToProps({ gameSettings, gameData }) {
   return {
     sideBoardWidth: gameSettings.sideBoardWidth,
     playerTurn: gameData.playerTurn,
-    loggedInPlayer: gameData.loggedInPlayer,
     selectedSeed: gameData.selectedSeed,
     dieCast: gameData.dieCast,
     gameData,
+    dieResult: gameData.dieResult,
+    numberOfPlayers: gameData.numberOfPlayers,
   };
 }
 
@@ -243,6 +281,9 @@ function mapDispatchToProps(dispatch) {
     dieCastComplete,
     changeTurn,
     clearNotification,
+    setResultToGlobalState,
+    setDisabled,
+    gameDataReset,
   }, dispatch);
 }
 

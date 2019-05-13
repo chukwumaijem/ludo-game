@@ -1,7 +1,7 @@
 import React from 'react';
 
-import styles from './GameChat.module.css';
+import './index.css';
 
-const GameChat = () => <div className={styles.chatWindowContainer}>Chat</div>;
+const GameChat = () => <div className="chatWindowContainer">Chat</div>;
 
 export default GameChat;

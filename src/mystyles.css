@@ -3,11 +3,6 @@
   background-color: #ddd;
 }
 
-.house .house-left {
-  float: left;
-  margin-bottom: 0px;
-}
-
 .rails .rails-h-left {
   clear: both;
   float: left;
@@ -73,12 +68,25 @@
   background-color: #7FA2F7;
 }
 
+.house-colour-grey {
+  background-color: #888;
+}
+.house-colour-grey.disabled {
+  cursor: not-allowed;
+}
+.house-colour-grey-light {
+  background-color: #ccc;
+}
+
 .railbox {
   border: 0.5px solid #aaa;
   display: inline-block;
   margin-bottom: -5px;
 }
 
+.box-grey {
+  background-color: #ccc;
+}
 .box-green {
   background-color: #95F77F;
 }
@@ -113,4 +121,13 @@
 .seed-3 {
   bottom: 0;
   right: 0;
+}
+
+.center-all {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
