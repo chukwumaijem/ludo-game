@@ -2,13 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { setSelectedSeed } from '../../actions';
+import { NUMBER } from '../../utils/constants';
 
-const NUMBER = {
-  1: 'One',
-  2: 'Two',
-  3: 'Three',
-  4: 'Four'
-}
 class HouseFrame extends React.Component {
   selectSeed = (seedId) => {
     this.props.setSelectedSeed(seedId)
@@ -43,24 +38,21 @@ class HouseFrame extends React.Component {
     return cards;
   }
   render() {
-    const houseHeight = this.props.houseHeight;
-    const className = `house house-${this.props.position}`;
-    const label = this.props.houseNumber;
+    const { houseHeight, houseNumber, disabled } = this.props;
+    const label = houseNumber;
     const houseCards = this.props.gameData[`house${NUMBER[label]}Cards`];
-    const houseColour = houseCards[`H${label}-Colour`];
+    const houseColour = disabled ? 'grey' : houseCards[`H${label}-Colour`];
     const colorClass = `house-colour-${houseColour}-light`;
 
     return (
-      <div className={className}>
-        <div className={colorClass} style={{ width: houseHeight, height: houseHeight, padding: houseHeight * 0.2 }}>
-          <div style={{
-            width: houseHeight * 0.6, height: houseHeight * 0.6,
-            backgroundColor: 'white', display: 'flex', flexWrap: 'wrap',
-            justifyContent: 'center',
-            position: 'absolute'
-          }}>
-            {this.renderCards(label, houseCards, houseColour)}
-          </div>
+      <div className={colorClass} style={{ width: houseHeight, height: houseHeight, padding: houseHeight * 0.2 }}>
+        <div style={{
+          width: houseHeight * 0.6, height: houseHeight * 0.6,
+          backgroundColor: 'white', display: 'flex', flexWrap: 'wrap',
+          justifyContent: 'center',
+          position: 'absolute'
+        }}>
+          {this.renderCards(label, houseCards, houseColour)}
         </div>
       </div>
     );

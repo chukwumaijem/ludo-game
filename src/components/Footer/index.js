@@ -1,9 +1,10 @@
 import React from 'react';
-import { Segment } from 'semantic-ui-react';
+import './footer.css';
 
 const Footer = () =>
-  <Segment attached="bottom" size='small' clearing textAlign='center'>
-    Copyright &copy; Synedrio 2018
-  </Segment>;
-
+  <footer className="footer mt-auto py-3">
+    <div className="container">
+      <span className="text-muted">Copyright &copy; Chukwumaijem 2017 - {new Date().getFullYear()}</span>
+    </div>
+  </footer>
 export default Footer;
