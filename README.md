@@ -23,5 +23,18 @@ Desktop Ludo game built with React and Electron.
 
 
 ### Screenshot
-Game Screen
-![alt text](./screenshots/gamescreen.png)
+Depending on the number of players selected, some houses may be disbaled.
+
+##### Two Player Mode
+![alt text](./screenshots/gamescreen2player.png)
+
+
+##### Three Player Mode
+![alt text](./screenshots/gamescreen3player.png)
+
+
+##### Four Player Mode
+![alt text](./screenshots/gamescreen4player.png)
+
+
+
