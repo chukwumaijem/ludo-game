@@ -233,8 +233,8 @@ class SideBoard extends Component {
         <GameChat />
         <hr className="hRule" />
         <div className="reset-buttons">
-          <button type="button" className="btn btn-warning" onClick={this.newGame}>New Gane</button>
-          <button type="button" className="btn btn-warning" onClick={this.resetGame}>Restart Gane</button>
+          <button type="button" className="btn btn-warning" onClick={this.newGame}>New Game</button>
+          <button type="button" className="btn btn-warning" onClick={this.resetGame}>Restart Game</button>
         </div>
         <hr className="hRule" />
         <div className="playMoveContainer">
